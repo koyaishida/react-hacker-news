@@ -6,7 +6,7 @@ export const PostsReducer = (state = initialState.posts, action: Actions) => {
     case ActionTypes.FETCH_POSTS:
       return {
         ...state,
-        posList: [...action.payload],
+        postList: [...action.payload],
       };
     default:
       return state;

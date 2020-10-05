@@ -6,4 +6,5 @@ export type Post = {
   time: number;
   url?: string;
   descendants: number;
+  kids?: number[];
 };
