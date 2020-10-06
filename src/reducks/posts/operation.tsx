@@ -1,7 +1,7 @@
 import { fetchPostsAction } from "./actions";
 import { Dispatch } from "redux";
 import { Actions } from "./actions";
-import { Post } from "./types";
+import { Post, UserProfile } from "./types";
 import axios, { AxiosResponse } from "axios";
 type URL_TYPE = "best" | "top" | "new" | "jpb";
 
@@ -16,6 +16,12 @@ export const fetchPostIds: (urlType: string) => Promise<number[]> = async (
 export const getPost = async (id: number) => {
   const URL = `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
   const posts: AxiosResponse<Post[]> = await axios.get(URL);
+  return posts.data;
+};
+
+export const getUserProfile = async (id: string) => {
+  const URL = `https://hacker-news.firebaseio.com/v0/user/${id}.json`;
+  const posts: AxiosResponse<UserProfile> = await axios.get(URL);
   return posts.data;
 };
 

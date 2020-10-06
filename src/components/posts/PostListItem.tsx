@@ -40,7 +40,9 @@ const PostListItem: React.FC<Props> = ({ post, order }) => {
         </p>
       </PostTitle>
       <DetailWrapper>
-        <DetailText>{`by ${by}`}</DetailText>
+        <DetailText
+          onClick={() => dispatch(push("/user/" + by))}
+        >{`by ${by}`}</DetailText>
         <DetailText>
           <button
           // onClick={() => dispatch(push("comments/:id"))}

@@ -8,3 +8,11 @@ export type Post = {
   descendants: number;
   kids?: number[];
 };
+
+export type UserProfile = {
+  about: string;
+  created: number;
+  id: string;
+  karma: number;
+  submitted: number[];
+};
