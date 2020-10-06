@@ -23,7 +23,9 @@ const PostList = () => {
   const selector = useSelector((state) => state);
   const posts = getPosts(selector);
   const dispatch = useDispatch();
-  const [urlType, setUrlType] = useState("new");
+  const [urlType, setUrlType] = useState("top");
+
+  console.log(selector, "state");
 
   const toggleUrlType = useCallback((type) => {
     setUrlType(type);
@@ -33,6 +35,7 @@ const PostList = () => {
     { label: "TOP", func: toggleUrlType, type: "top" },
     { label: "NEW", func: toggleUrlType, type: "new" },
     { label: "BEST", func: toggleUrlType, type: "best" },
+    { label: "JOB", func: toggleUrlType, type: "job" },
   ];
 
   useEffect(() => {
@@ -54,7 +57,6 @@ const PostList = () => {
           </Button>
         ))}
       </TagsWrapper>
-
       {posts.length > 0 &&
         posts.map((post: any, index: number) => (
           <PostListItem key={index} post={post} order={index} />

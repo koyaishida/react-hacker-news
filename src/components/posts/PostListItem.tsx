@@ -43,7 +43,7 @@ const PostListItem: React.FC<Props> = ({ post, order }) => {
         <DetailText>{`by ${by}`}</DetailText>
         <DetailText>
           <button
-            onClick={() => dispatch(push("comments/:id"))}
+          // onClick={() => dispatch(push("comments/:id"))}
           >{`comments ${descendants}`}</button>
         </DetailText>
         <DetailText>{getElapsedTime(time)}</DetailText>

@@ -3,6 +3,7 @@ import { UserState } from "./types";
 
 export const ActionTypes = {
   SIGN_IN: "SIGN_IN",
+  SIGN_OUT: "SIGN_OUT",
 } as const;
 
 export const signInAction = (userState: UserState) => {
@@ -20,4 +21,18 @@ export const signInAction = (userState: UserState) => {
 
 type SignInAction = ReturnType<typeof signInAction>;
 
-export type Actions = SignInAction;
+export const signOutAction = () => {
+  console.log("out");
+  return {
+    type: ActionTypes.SIGN_OUT,
+    payload: {
+      isSignedIn: false,
+      uid: "",
+      username: "",
+      email: "",
+    },
+  };
+};
+type SignOutAction = ReturnType<typeof signOutAction>;
+
+export type Actions = SignInAction | SignOutAction;
