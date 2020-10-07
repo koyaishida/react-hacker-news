@@ -1,7 +1,14 @@
 import { Dispatch } from "redux";
 import { auth, FirebaseTimestamp, db } from "../../firebase/index";
 import { push } from "connected-react-router";
-import { signInAction, Actions, signOutAction } from "./actions";
+import {
+  signInAction,
+  Actions,
+  signOutAction,
+  fetchBookmarkedPostsAction,
+} from "./actions";
+import { Post } from "../posts/types";
+import { StoreState } from "../store/types";
 
 const userRef = db.collection("user");
 
@@ -141,5 +148,26 @@ export const signOut = () => {
       dispatch(signOutAction());
       dispatch(push("/signIn"));
     });
+  };
+};
+
+export const addBookmark = (post: Post) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
+    const uid = getState().user.uid;
+    const bookmarkRef = db
+      .collection("user")
+      .doc(uid)
+      .collection("bookmark")
+      .doc();
+
+    post.bookmarkId = bookmarkRef.id;
+    await bookmarkRef.set(post);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchBookmarkedPosts = (posts: Post[]) => {
+  return async (dispatch: Dispatch<Actions>) => {
+    dispatch(fetchBookmarkedPostsAction(posts));
   };
 };

@@ -17,6 +17,11 @@ export const UserReducer = (
         ...userState,
         ...action.payload,
       };
+    case ActionTypes.FETCH_BOOKMARKED_POSTS:
+      return {
+        ...userState,
+        bookmark: [...action.payload],
+      };
     default:
       return userState;
   }

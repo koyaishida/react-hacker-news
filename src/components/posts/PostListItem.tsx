@@ -1,9 +1,12 @@
 import React from "react";
 import { Post } from "../../reducks/posts/types";
 import { getElapsedTime } from "../../reducks/posts/operation";
+import { addBookmark } from "../../reducks/user/operation";
+import { getUserId } from "../../reducks/user/selector";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
+import { db } from "../../firebase/index";
 
 const Wrapper = styled.div``;
 
@@ -28,28 +31,52 @@ type Props = {
   order: number;
 };
 const PostListItem: React.FC<Props> = ({ post, order }) => {
-  const { title, by, descendants, time, url, kids } = post;
+  const { title, by, descendants, time, url, kids, bookmarkId } = post;
   const dispatch = useDispatch();
+  const selector = useSelector((state) => state);
+  const uid = getUserId(selector);
+
+  const deleteBookmarkedPost = (id: string) => {
+    return db
+      .collection("user")
+      .doc(uid)
+      .collection("bookmark")
+      .doc(id)
+      .delete();
+  };
 
   return (
     <Wrapper>
-      <PostTitle>
-        <Index>{order + 1}</Index>
-        <p>
-          <a href={url}>{title}</a>
-        </p>
-      </PostTitle>
-      <DetailWrapper>
-        <DetailText
-          onClick={() => dispatch(push("/user/" + by))}
-        >{`by ${by}`}</DetailText>
-        <DetailText>
-          <button
-          // onClick={() => dispatch(push("comments/:id"))}
-          >{`comments ${descendants}`}</button>
-        </DetailText>
-        <DetailText>{getElapsedTime(time)}</DetailText>
-      </DetailWrapper>
+      <div>
+        <PostTitle>
+          <Index>{order + 1}</Index>
+          <p>
+            <a href={url}>{title}</a>
+          </p>
+        </PostTitle>
+        <DetailWrapper>
+          <DetailText
+            onClick={() => dispatch(push("/user/" + by))}
+          >{`by ${by}`}</DetailText>
+          <DetailText>
+            <button>{`comments ${descendants}`}</button>
+          </DetailText>
+          <DetailText>{getElapsedTime(time)}</DetailText>
+        </DetailWrapper>
+      </div>
+      {uid && (
+        <div>
+          {bookmarkId ? (
+            <button onClick={() => deleteBookmarkedPost(bookmarkId)}>
+              delete
+            </button>
+          ) : (
+            <button onClick={() => dispatch(addBookmark(post))}>
+              bookmark
+            </button>
+          )}
+        </div>
+      )}
     </Wrapper>
   );
 };

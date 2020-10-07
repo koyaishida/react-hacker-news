@@ -7,7 +7,6 @@ import { push } from "connected-react-router";
 const SignIn = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
-  console.log(selector, "signin");
 
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState("");

@@ -1,9 +1,10 @@
 import { Bookmark } from "@material-ui/icons";
 import { UserState } from "./types";
-
+import { Post } from "../posts/types";
 export const ActionTypes = {
   SIGN_IN: "SIGN_IN",
   SIGN_OUT: "SIGN_OUT",
+  FETCH_BOOKMARKED_POSTS: "FETCH_BOOKMARKED_POSTS",
 } as const;
 
 export const signInAction = (userState: UserState) => {
@@ -35,4 +36,12 @@ export const signOutAction = () => {
 };
 type SignOutAction = ReturnType<typeof signOutAction>;
 
-export type Actions = SignInAction | SignOutAction;
+export const fetchBookmarkedPostsAction = (posts: Post[]) => {
+  return {
+    type: ActionTypes.FETCH_BOOKMARKED_POSTS,
+    payload: posts,
+  };
+};
+type FetchBookmarkedPostsAction = ReturnType<typeof fetchBookmarkedPostsAction>;
+
+export type Actions = SignInAction | SignOutAction | FetchBookmarkedPostsAction;

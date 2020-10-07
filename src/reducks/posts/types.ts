@@ -7,6 +7,7 @@ export type Post = {
   url?: string;
   descendants: number;
   kids?: number[];
+  bookmarkId?: string;
 };
 
 export type UserProfile = {
