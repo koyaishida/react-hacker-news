@@ -28,9 +28,11 @@ const DetailText = styled.p`
 `;
 type Props = {
   post: Post;
-  order?: number;
+  order: number;
+  quantity: number;
 };
-const PostListItem: React.FC<Props> = ({ post, order }) => {
+
+const PostListItem: React.FC<Props> = ({ post, order, quantity }) => {
   const { title, by, descendants, time, url, kids, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
@@ -49,7 +51,7 @@ const PostListItem: React.FC<Props> = ({ post, order }) => {
     <Wrapper>
       <div>
         <PostTitle>
-          {order && <Index>{order + 1}</Index>}
+          <Index>{order + 1 + quantity - 20}</Index>
           <p>
             <a href={url}>{title}</a>
           </p>

@@ -5,15 +5,17 @@ import { Post, UserProfile } from "./types";
 import axios, { AxiosResponse } from "axios";
 type URL_TYPE = "best" | "top" | "new" | "jpb";
 
-export const fetchPostIds: (urlType: string) => Promise<number[]> = async (
-  urlType: string
-) => {
+export const fetchPostIds: (
+  urlType: string,
+  quantity?: number
+) => Promise<number[]> = async (urlType: string) => {
   const URL = `https://hacker-news.firebaseio.com/v0/${urlType}stories.json`;
   const response = await axios.get(URL);
   return response.data;
 };
 
 export const getPost = async (id: number | string) => {
+  console.log("post");
   const URL = `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
   const post: AxiosResponse<Post> = await axios.get(URL);
   return post.data;
