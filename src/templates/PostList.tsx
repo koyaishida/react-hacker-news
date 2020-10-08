@@ -26,8 +26,6 @@ const PostList = () => {
   const dispatch = useDispatch();
   const [urlType, setUrlType] = useState("top");
 
-  console.log(selector, "state");
-
   const toggleUrlType = useCallback((type) => {
     setUrlType(type);
   }, []);
@@ -51,6 +49,7 @@ const PostList = () => {
         .then((ids) => ids.map((id: number) => getPost(id)))
         .then((promises: any) => Promise.all(promises))
         .then((posts: any) => {
+          console.log(posts, "pos");
           dispatch(fetchPostsAction(posts));
         });
     }

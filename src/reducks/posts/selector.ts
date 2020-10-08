@@ -7,3 +7,8 @@ export const getPosts = createSelector(
   [productsSelector],
   (state) => state.postList
 );
+
+export const getComments = createSelector(
+  [productsSelector],
+  (state) => state.comments
+);

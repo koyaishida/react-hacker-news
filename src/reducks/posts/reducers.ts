@@ -8,6 +8,11 @@ export const PostsReducer = (state = initialState.posts, action: Actions) => {
         ...state,
         postList: [...action.payload],
       };
+    case ActionTypes.FETCH_COMMENTS:
+      return {
+        ...state,
+        comments: [...action.payload],
+      };
     default:
       return state;
   }

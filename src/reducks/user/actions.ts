@@ -23,7 +23,6 @@ export const signInAction = (userState: UserState) => {
 type SignInAction = ReturnType<typeof signInAction>;
 
 export const signOutAction = () => {
-  console.log("out");
   return {
     type: ActionTypes.SIGN_OUT,
     payload: {

@@ -28,10 +28,10 @@ const DetailText = styled.p`
 `;
 type Props = {
   post: Post;
-  order: number;
+  order?: number;
 };
 const PostListItem: React.FC<Props> = ({ post, order }) => {
-  const { title, by, descendants, time, url, kids, bookmarkId } = post;
+  const { title, by, descendants, time, url, kids, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
@@ -49,7 +49,7 @@ const PostListItem: React.FC<Props> = ({ post, order }) => {
     <Wrapper>
       <div>
         <PostTitle>
-          <Index>{order + 1}</Index>
+          {order && <Index>{order + 1}</Index>}
           <p>
             <a href={url}>{title}</a>
           </p>
@@ -59,7 +59,14 @@ const PostListItem: React.FC<Props> = ({ post, order }) => {
             onClick={() => dispatch(push("/user/" + by))}
           >{`by ${by}`}</DetailText>
           <DetailText>
-            <button>{`comments ${descendants}`}</button>
+            <button>
+              <a
+                href={`https://news.ycombinator.com/item?id=${id}`}
+              >{`comments ${descendants}`}</a>
+            </button>
+            {/* <button
+              onClick={() => dispatch(push("/comments/" + id))}
+            >{`comments ${descendants}`}</button> */}
           </DetailText>
           <DetailText>{getElapsedTime(time)}</DetailText>
         </DetailWrapper>

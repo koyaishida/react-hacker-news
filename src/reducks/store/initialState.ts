@@ -1,6 +1,7 @@
 const initialState = {
   posts: {
     postList: [],
+    comments: [],
   },
   user: {
     username: "",

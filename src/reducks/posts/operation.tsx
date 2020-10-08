@@ -13,10 +13,10 @@ export const fetchPostIds: (urlType: string) => Promise<number[]> = async (
   return response.data;
 };
 
-export const getPost = async (id: number) => {
+export const getPost = async (id: number | string) => {
   const URL = `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
-  const posts: AxiosResponse<Post[]> = await axios.get(URL);
-  return posts.data;
+  const post: AxiosResponse<Post> = await axios.get(URL);
+  return post.data;
 };
 
 export const getUserProfile = async (id: string) => {
@@ -58,3 +58,13 @@ export const getElapsedTime = (timestamp: number) => {
 
   return `${Math.floor(seconds)} seconds ago`;
 };
+
+// export const fetchComments = (kids: any[]) => {
+//   const array: any = [];
+//   kids.map((id: any, i: any) => {
+//     getPost(id).then((comment) => {
+//       return;
+//     });
+//   });
+//   return array;
+// };
