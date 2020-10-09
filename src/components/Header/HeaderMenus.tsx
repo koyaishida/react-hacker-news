@@ -16,8 +16,23 @@ const Wrapper = styled.div`
   display: flex;
   margin: 0 0 0 auto;
   color: #fff;
-  width: 360px;
-  justify-content: space-around;
+  width: 480px;
+  align-items: center;
+`;
+
+const Username = styled.p`
+  margin: 0 0 0 auto;
+`;
+
+const Logout = styled.button`
+  margin: 0 0 0 auto;
+  color: #ffffff;
+  background-color: #303e59;
+  border: solid 1px #ffffff;
+  outline: none;
+  border-radius: 16%;
+  height: 56px;
+  line-height: 56px;
 `;
 
 const HeaderMenus: React.FC<Props> = ({ username, email }) => {
@@ -61,9 +76,8 @@ const HeaderMenus: React.FC<Props> = ({ username, email }) => {
 
   return (
     <Wrapper>
-      <p>{username}</p>
-      <p>{email}</p>
-      <button onClick={() => dispatch(signOut())}>ログアウト</button>
+      <Username>{username}</Username>
+      <Logout onClick={() => dispatch(signOut())}>ログアウト</Logout>
     </Wrapper>
   );
 };

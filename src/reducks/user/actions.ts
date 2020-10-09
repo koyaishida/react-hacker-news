@@ -1,4 +1,3 @@
-import { Bookmark } from "@material-ui/icons";
 import { UserState } from "./types";
 import { Post } from "../posts/types";
 export const ActionTypes = {

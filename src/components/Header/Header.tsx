@@ -13,14 +13,27 @@ import HeaderMenus from "./HeaderMenus";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: flex-end;
-  background-color: blue;
-  height: 56px;
+  background-color: #303e59;
+  align-items: center;
+  height: 64px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 8px 48px;
 `;
 
 const Login = styled.button`
   margin: 0 0 0 auto;
-  color: #fff;
-  background-color: blue;
+  color: #ffffff;
+  background-color: #303e59;
+  border: solid 1px #ffffff;
+  border-radius: 16%;
+  height: 56px;
+  line-height: 56px;
+  outline: none;
 `;
 
 const Header = () => {

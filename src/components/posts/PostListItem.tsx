@@ -2,13 +2,23 @@ import React from "react";
 import { Post } from "../../reducks/posts/types";
 import { getElapsedTime } from "../../reducks/posts/operation";
 import { addBookmark } from "../../reducks/user/operation";
-import { getUserId } from "../../reducks/user/selector";
+import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 import { db } from "../../firebase/index";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import {
+  faBookmark as bookmarked,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
 const DetailWrapper = styled.div`
   display: flex;
@@ -30,13 +40,15 @@ type Props = {
   post: Post;
   order: number;
   quantity: number;
+  urlType: string;
 };
 
-const PostListItem: React.FC<Props> = ({ post, order, quantity }) => {
+const PostListItem: React.FC<Props> = ({ post, order, quantity, urlType }) => {
   const { title, by, descendants, time, url, kids, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
+  const bookmarkedPosts: any = getBookmarkedPosts(selector);
 
   const deleteBookmarkedPost = (id: string) => {
     return db
@@ -46,6 +58,10 @@ const PostListItem: React.FC<Props> = ({ post, order, quantity }) => {
       .doc(id)
       .delete();
   };
+
+  const bookmarkedIds = bookmarkedPosts.map((bookmarkedPost: any) => {
+    return bookmarkedPost.id;
+  });
 
   return (
     <Wrapper>
@@ -75,14 +91,20 @@ const PostListItem: React.FC<Props> = ({ post, order, quantity }) => {
       </div>
       {uid && (
         <div>
-          {bookmarkId ? (
-            <button onClick={() => deleteBookmarkedPost(bookmarkId)}>
-              delete
-            </button>
+          {urlType === "bookmark" && bookmarkId ? (
+            <FontAwesomeIcon
+              onClick={() => dispatch(deleteBookmarkedPost(bookmarkId))}
+              icon={faTrashAlt}
+              style={{ fontSize: 32 }}
+            />
+          ) : bookmarkedIds.indexOf(id) === -1 ? (
+            <FontAwesomeIcon
+              onClick={() => dispatch(addBookmark(post))}
+              icon={faBookmark}
+              style={{ fontSize: 32 }}
+            />
           ) : (
-            <button onClick={() => dispatch(addBookmark(post))}>
-              bookmark
-            </button>
+            <FontAwesomeIcon icon={bookmarked} style={{ fontSize: 32 }} />
           )}
         </div>
       )}
