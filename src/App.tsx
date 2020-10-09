@@ -6,7 +6,7 @@ import { Header } from "./components/Header";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  padding: 192px 0;
+  padding: 148px 0;
   max-width: 960px;
   text-align: "center";
   margin: 0 auto;

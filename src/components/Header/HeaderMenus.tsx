@@ -33,6 +33,9 @@ const Logout = styled.button`
   border-radius: 16%;
   height: 56px;
   line-height: 56px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const HeaderMenus: React.FC<Props> = ({ username, email }) => {

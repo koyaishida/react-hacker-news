@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const DetailWrapper = styled.div`
@@ -28,13 +29,19 @@ const DetailWrapper = styled.div`
 const PostTitle = styled.h3`
   margin: 0;
   display: flex;
+  align-items: center;
+`;
+
+const Link = styled.a`
+  color: #303e59;
+  margin-right: 24px;
 `;
 const Index = styled.p`
   margin-right: 10px;
 `;
 
-const DetailText = styled.p`
-  margin: 5px 10px;
+const ElapsedTime = styled.p`
+  margin: 0;
 `;
 type Props = {
   post: Post;
@@ -68,27 +75,21 @@ const PostListItem: React.FC<Props> = ({ post, order, quantity, urlType }) => {
       <div>
         <PostTitle>
           <Index>{order + 1 + quantity - 20}</Index>
-          <p>
-            <a href={url}>{title}</a>
-          </p>
+          <Link href={url}>{title}</Link>
         </PostTitle>
         <DetailWrapper>
-          <DetailText
+          <Link
             onClick={() => dispatch(push("/user/" + by))}
-          >{`by ${by}`}</DetailText>
-          <DetailText>
-            <button>
-              <a
-                href={`https://news.ycombinator.com/item?id=${id}`}
-              >{`comments ${descendants}`}</a>
-            </button>
-            {/* <button
-              onClick={() => dispatch(push("/comments/" + id))}
-            >{`comments ${descendants}`}</button> */}
-          </DetailText>
-          <DetailText>{getElapsedTime(time)}</DetailText>
+          >{`by ${by}`}</Link>
+
+          <Link
+            href={`https://news.ycombinator.com/item?id=${id}`}
+          >{`comments ${descendants}`}</Link>
+
+          <ElapsedTime>{getElapsedTime(time)}</ElapsedTime>
         </DetailWrapper>
       </div>
+
       {uid && (
         <div>
           {urlType === "bookmark" && bookmarkId ? (

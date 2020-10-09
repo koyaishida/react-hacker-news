@@ -4,6 +4,13 @@ import { signUp } from "../reducks/user/operation";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  padding: 0 100px;
+  text-align: center;
+`;
+
 const SignUp = () => {
   const dispatch = useDispatch();
   const [username, setUsername] = useState(""),
@@ -40,9 +47,8 @@ const SignUp = () => {
   );
 
   return (
-    <div className="c-section-container">
+    <Wrapper>
       <h2 className="u-text__headline u-text-center">アカウント作成画面</h2>
-      <div className="module-spacer--medium" />
       <TextInput
         label={"ユーザー名"}
         required={true}
@@ -71,20 +77,17 @@ const SignUp = () => {
         type={"password"}
         onChange={inputConfirmPassword}
       />
-      <div className="module-spacer--medium" />
-      <div className="center">
-        <PrimaryButton
-          label={"アカウントを登録する"}
-          onClick={() =>
-            dispatch(signUp(username, email, password, confirmPassword))
-          }
-        />
-        <div className="module-spacer--medium" />
-        <p onClick={() => dispatch(push("/signIn"))}>
-          アカウントをお持ちの方はこちら
-        </p>
-      </div>
-    </div>
+      <PrimaryButton
+        label={"アカウントを登録する"}
+        onClick={() =>
+          dispatch(signUp(username, email, password, confirmPassword))
+        }
+      />
+
+      <p onClick={() => dispatch(push("/signin"))}>
+        アカウントをお持ちの方はこちら
+      </p>
+    </Wrapper>
   );
 };
 

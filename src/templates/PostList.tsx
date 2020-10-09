@@ -35,6 +35,7 @@ const Button = styled.button<{ isActive: boolean }>`
   outline: none;
   &:hover {
     color: #04a4eb;
+    cursor: pointer;
   }
 `;
 
@@ -178,7 +179,7 @@ const PostList = () => {
       </Wrapper>
       <PageNation>
         <p onClick={() => prev(urlType, quantity)}>prev</p>
-        <p>page{`${quantity / 20}/10`}</p>
+        <p>page {`${quantity / 20}/10`}</p>
         <p onClick={() => more(urlType, quantity)}>more</p>
       </PageNation>
     </section>

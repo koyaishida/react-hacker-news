@@ -13,7 +13,6 @@ import Comment from "../components/posts/Comment";
 
 const Comments = () => {
   const selector = useSelector((state) => state);
-  console.log(selector);
   const dispatch = useDispatch();
   const path = selector.router.location.pathname;
   const comments = getComments(selector);

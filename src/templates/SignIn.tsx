@@ -3,6 +3,12 @@ import { TextInput, PrimaryButton } from "../components/UIkit";
 import { signIn } from "../reducks/user/operation";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  padding: 0 100px;
+  text-align: center;
+`;
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -26,9 +32,8 @@ const SignIn = () => {
   );
 
   return (
-    <div className="c-section-container">
+    <Wrapper>
       <h2 className="u-text__headline u-text-center">ログイン画面</h2>
-      <div className="module-spacer--medium" />
 
       <TextInput
         label={"メールアドレス"}
@@ -44,23 +49,19 @@ const SignIn = () => {
         type={"password"}
         onChange={inputPassword}
       />
-
-      <div className="module-spacer--medium" />
       <div className="center">
         <PrimaryButton
-          label={"SignIn"}
+          label={"ログインする"}
           onClick={() => dispatch(signIn(email, password))}
         />
-        <div className="module-spacer--medium" />
-        <p onClick={() => dispatch(push("/signUp"))}>
+        <p onClick={() => dispatch(push("/signup"))}>
           アカウントをお持ちでない方はこちら
         </p>
-        <div className="module-spacer--medium" />
-        <p onClick={() => dispatch(push("/signIn/reset"))}>
+        {/* <p onClick={() => dispatch(push("/signIn/reset"))}>
           パスワードを忘れた方はこちら
-        </p>
+        </p> */}
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
