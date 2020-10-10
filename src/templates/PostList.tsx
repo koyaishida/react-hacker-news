@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchPostIds, getPost } from "../reducks/posts/operation";
-import { fetchPostsAction } from "../reducks/posts/actions";
-import { getPosts } from "../reducks/posts/selector";
+import React, { useState, useCallback, useRef } from "react";
+import { useSelector } from "react-redux";
 import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
 import { PostListItem } from "../components/posts";
 import { Post } from "../reducks/posts/types";
 import styled from "styled-components";
+import { useDataApi } from "../hooks/hooks";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -53,14 +51,14 @@ const PageNation = styled.div`
 `;
 
 const PostList = () => {
-  const selector = useSelector((state) => state);
-  const posts = getPosts(selector);
-  const dispatch = useDispatch();
   const [urlType, setUrlType] = useState("top");
   const [quantity, setQuantity] = useState<number>(20);
-  const isSignedIn = getIsSignedIn(selector);
   const ref = useRef<HTMLDivElement>(null);
-  console.log(selector);
+
+  const [{ posts }] = useDataApi(urlType, quantity, ref);
+
+  const selector = useSelector((state) => state);
+  const isSignedIn = getIsSignedIn(selector);
 
   const toggleUrlType = useCallback((type) => {
     setUrlType(type);
@@ -74,67 +72,18 @@ const PostList = () => {
     { label: "BOOKMARK", func: toggleUrlType, type: "bookmark" },
   ];
 
+  console.log(quantity);
+  const prevPage = useCallback(() => {
+    setQuantity((prevQuantity) => (quantity !== 20 ? prevQuantity - 20 : 20));
+  }, []);
+  const nextPage = useCallback(() => {
+    if (quantity === 500) {
+      return;
+    }
+    setQuantity((prevQuantity) => prevQuantity + 20);
+  }, []);
+
   let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
-
-  useEffect(() => {
-    if (urlType === "bookmark") {
-      return;
-    } else {
-      fetchPostIds(urlType)
-        .then((ids) => ids.filter((id, i) => i < 20))
-        .then((ids) => ids.map((id: number) => getPost(id)))
-        .then((promises: any) => Promise.all(promises))
-        .then((posts: any) => {
-          dispatch(fetchPostsAction(posts));
-          setQuantity(20);
-        });
-    }
-  }, [urlType]);
-
-  const page = (id: any, index: number) => {
-    if (quantity <= index && index < quantity + 20) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const more = useCallback((urlType, quantity) => {
-    if (urlType === "bookmark") {
-      return;
-    } else {
-      fetchPostIds(urlType, quantity)
-        .then((ids) => ids.filter(page))
-        .then((ids: any) => ids.map((id: number) => getPost(id)))
-        .then((promises: any) => Promise.all(promises))
-        .then((posts: any) => {
-          dispatch(fetchPostsAction(posts));
-          setQuantity(quantity + 20);
-        });
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-      ref.current?.scrollTo({ top: 0, left: 0 });
-    }
-  }, []);
-
-  const prev = useCallback((urlType, quantity) => {
-    if (quantity === 20) {
-      return;
-    }
-    if (urlType === "bookmark") {
-      return;
-    } else {
-      fetchPostIds(urlType, quantity)
-        .then((ids) => ids.filter(page))
-        .then((ids: any) => ids.map((id: number) => getPost(id)))
-        .then((promises: any) => Promise.all(promises))
-        .then((posts: any) => {
-          dispatch(fetchPostsAction(posts));
-          setQuantity(quantity - 20);
-          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-          ref.current?.scrollTo({ top: 0, left: 0 });
-        });
-    }
-  }, []);
 
   return (
     <section>
@@ -165,7 +114,8 @@ const PostList = () => {
                   urlType={urlType}
                 />
               ))
-            : posts.length > 0 &&
+            : posts &&
+              posts.length > 0 &&
               posts.map((post: any, index: number) => (
                 <PostListItem
                   key={index}
@@ -178,9 +128,9 @@ const PostList = () => {
         </ItemWrapper>
       </Wrapper>
       <PageNation>
-        <p onClick={() => prev(urlType, quantity)}>prev</p>
+        <p onClick={prevPage}>prev</p>
         <p>page {`${quantity / 20}/10`}</p>
-        <p onClick={() => more(urlType, quantity)}>more</p>
+        <p onClick={nextPage}>more</p>
       </PageNation>
     </section>
   );

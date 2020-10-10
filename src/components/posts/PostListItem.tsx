@@ -94,7 +94,7 @@ const PostListItem: React.FC<Props> = ({ post, order, quantity, urlType }) => {
         <div>
           {urlType === "bookmark" && bookmarkId ? (
             <FontAwesomeIcon
-              onClick={() => dispatch(deleteBookmarkedPost(bookmarkId))}
+              onClick={() => deleteBookmarkedPost(bookmarkId)}
               icon={faTrashAlt}
               style={{ fontSize: 32 }}
             />

@@ -1,11 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  background-color: #04a4eb;
-  padding: 8px 16px;
-`;
-
 const Button = styled.button`
   background-color: #04a4eb;
   padding: 24px 64px;
@@ -15,6 +10,7 @@ const Button = styled.button`
   border-radius: 8%;
   border: none;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  outline: none;
   &:hover {
     cursor: pointer;
   }

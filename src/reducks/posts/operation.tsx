@@ -9,6 +9,7 @@ export const fetchPostIds: (
   urlType: string,
   quantity?: number
 ) => Promise<number[]> = async (urlType: string) => {
+  console.log(urlType, "ids");
   const URL = `https://hacker-news.firebaseio.com/v0/${urlType}stories.json`;
   const response = await axios.get(URL);
   return response.data;
