@@ -5,6 +5,10 @@ import { PostListItem } from "../components/posts";
 import { Post } from "../reducks/posts/types";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
+import { TextInput } from "../components/UIkit";
+import { fetchPostIds, getPost } from "../reducks/posts/operation";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -50,12 +54,20 @@ const PageNation = styled.div`
   justify-content: space-around;
 `;
 
+const SearchField = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+`;
+
 const PostList = () => {
   const [urlType, setUrlType] = useState("top");
   const [quantity, setQuantity] = useState<number>(20);
+  const [query, setQuery] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
 
-  const [{ posts }] = useDataApi(urlType, quantity, ref);
+  const [{ posts }, { setPosts }] = useDataApi(urlType, quantity, ref);
 
   const selector = useSelector((state) => state);
   const isSignedIn = getIsSignedIn(selector);
@@ -72,7 +84,6 @@ const PostList = () => {
     { label: "BOOKMARK", func: toggleUrlType, type: "bookmark" },
   ];
 
-  console.log(quantity);
   const prevPage = useCallback(() => {
     setQuantity((prevQuantity) => (quantity !== 20 ? prevQuantity - 20 : 20));
   }, []);
@@ -83,7 +94,32 @@ const PostList = () => {
     setQuantity((prevQuantity) => prevQuantity + 20);
   }, []);
 
+  const Search = (search: string) => {
+    const searchedPosts: any = [];
+    fetchPostIds(urlType)
+      .then((ids) => ids.map((id: number) => getPost(id)))
+      .then((promises: any) => Promise.all(promises))
+      .then((posts: any) => {
+        posts?.filter((item: any) => {
+          if (item.title.indexOf(search) > 0) {
+            searchedPosts.push(item);
+          } else {
+            return;
+          }
+        });
+        setPosts(searchedPosts);
+        console.log(searchedPosts, "data");
+      });
+  };
+
   let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
+
+  const inputSearch = useCallback(
+    (event) => {
+      setQuery(event.target.value);
+    },
+    [setQuery]
+  );
 
   return (
     <section>
@@ -132,6 +168,21 @@ const PostList = () => {
         <p>page {`${quantity / 20}/10`}</p>
         <p onClick={nextPage}>more</p>
       </PageNation>
+      <SearchField>
+        <TextInput
+          type={"text"}
+          label={" 検索"}
+          onChange={inputSearch}
+          value={query}
+          required={false}
+        />
+
+        <FontAwesomeIcon
+          onClick={() => Search(query)}
+          icon={faSearch}
+          style={{ fontSize: 28 }}
+        />
+      </SearchField>
     </section>
   );
 };

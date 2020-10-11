@@ -6,7 +6,10 @@ export const useDataApi = (
   urlType: string,
   quantity: number,
   ref: React.RefObject<HTMLDivElement>
-): [{ posts?: Post[] }] => {
+): [
+  { posts?: Post[] },
+  { setPosts: React.Dispatch<React.SetStateAction<Post[] | undefined>> }
+] => {
   const [posts, setPosts] = useState<Post[]>();
   const page = (id: any, index: number) => {
     if (index >= quantity - 20 && index < quantity) {
@@ -32,5 +35,5 @@ export const useDataApi = (
     }
   }, [urlType, quantity]);
 
-  return [{ posts }];
+  return [{ posts }, { setPosts }];
 };

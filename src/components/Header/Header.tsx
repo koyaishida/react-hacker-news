@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
@@ -9,6 +9,7 @@ import {
   getEmail,
 } from "../../reducks/user/selector";
 import HeaderMenus from "./HeaderMenus";
+import { TextInput } from "../UIkit/index";
 
 const Wrapper = styled.div`
   display: flex;

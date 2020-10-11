@@ -61,13 +61,3 @@ export const getElapsedTime = (timestamp: number) => {
 
   return `${Math.floor(seconds)} seconds ago`;
 };
-
-// export const fetchComments = (kids: any[]) => {
-//   const array: any = [];
-//   kids.map((id: any, i: any) => {
-//     getPost(id).then((comment) => {
-//       return;
-//     });
-//   });
-//   return array;
-// };
