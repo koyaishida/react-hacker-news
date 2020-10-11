@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUserProfile, getElapsedTime } from "../reducks/posts/operation";
-import { push } from "connected-react-router";
 
 const UserMyPage = () => {
   const selector = useSelector((state) => state);
-  const dispatch = useDispatch();
   const path = selector.router.location.pathname;
   const id = path.split("/user/")[1];
 
@@ -29,12 +27,12 @@ const UserMyPage = () => {
       <h3>ユーザーページ</h3>
       {name && (
         <div>
-          <p>{id}</p>
-          <p>{about}</p>
-          <p>{getElapsedTime(created)}</p>
+          <p>name：{name}</p>
+          <p>description:{about}</p>
+          <p>created at:{getElapsedTime(created)}</p>
+          <p>karma:{karma}</p>
         </div>
       )}
-      <button onClick={() => dispatch(push("/"))}>go back home</button>
     </div>
   );
 };

@@ -35,6 +35,9 @@ const PostTitle = styled.h3`
 const Link = styled.a`
   color: #303e59;
   margin-right: 24px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 const Index = styled.p`
   margin-right: 10px;
@@ -46,11 +49,16 @@ const ElapsedTime = styled.p`
 type Props = {
   post: Post;
   order: number;
-  quantity: number;
+  currentPage: number;
   urlType: string;
 };
 
-const PostListItem: React.FC<Props> = ({ post, order, quantity, urlType }) => {
+const PostListItem: React.FC<Props> = ({
+  post,
+  order,
+  currentPage,
+  urlType,
+}) => {
   const { title, by, descendants, time, url, kids, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
@@ -74,7 +82,7 @@ const PostListItem: React.FC<Props> = ({ post, order, quantity, urlType }) => {
     <Wrapper>
       <div>
         <PostTitle>
-          <Index>{order + 1 + quantity - 20}</Index>
+          <Index>{order + currentPage * 20 - 19}</Index>
           <Link href={url}>{title}</Link>
         </PostTitle>
         <DetailWrapper>

@@ -1,0 +1,39 @@
+import React from "react";
+import styled from "styled-components";
+import { TextInput } from "../UIkit";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+`;
+
+type Props = {
+  query: string;
+  onChange: (event: any) => void;
+  search: (search: string) => void;
+};
+
+const SearchField: React.FC<Props> = ({ query, onChange, search }) => {
+  return (
+    <Wrapper>
+      <TextInput
+        type={"text"}
+        label={" 検索"}
+        onChange={onChange}
+        value={query}
+        required={false}
+      />
+      <FontAwesomeIcon
+        onClick={() => search(query)}
+        icon={faSearch}
+        style={{ fontSize: 28 }}
+      />
+    </Wrapper>
+  );
+};
+
+export default SearchField;

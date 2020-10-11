@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
-import { PostListItem } from "../components/posts";
+import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post } from "../reducks/posts/types";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { TextInput } from "../components/UIkit";
 import { fetchPostIds, getPost } from "../reducks/posts/operation";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faSearch } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -49,31 +49,18 @@ const ButtonText = styled.p<{ isActive: boolean }>`
   padding: 4px;
 `;
 
-const PageNation = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
-
-const SearchField = styled.div`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-`;
-
 const PostList = () => {
   const [urlType, setUrlType] = useState("top");
-  const [quantity, setQuantity] = useState<number>(20);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
-
-  const [{ posts }, { setPosts }] = useDataApi(urlType, quantity, ref);
-
   const selector = useSelector((state) => state);
   const isSignedIn = getIsSignedIn(selector);
+  const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage, ref);
 
   const toggleUrlType = useCallback((type) => {
     setUrlType(type);
+    setCurrentPage(1);
   }, []);
 
   const menus = [
@@ -83,16 +70,6 @@ const PostList = () => {
     { label: "JOB", func: toggleUrlType, type: "job" },
     { label: "BOOKMARK", func: toggleUrlType, type: "bookmark" },
   ];
-
-  const prevPage = useCallback(() => {
-    setQuantity((prevQuantity) => (quantity !== 20 ? prevQuantity - 20 : 20));
-  }, []);
-  const nextPage = useCallback(() => {
-    if (quantity === 500) {
-      return;
-    }
-    setQuantity((prevQuantity) => prevQuantity + 20);
-  }, []);
 
   const Search = (search: string) => {
     const searchedPosts: any = [];
@@ -108,7 +85,6 @@ const PostList = () => {
           }
         });
         setPosts(searchedPosts);
-        console.log(searchedPosts, "data");
       });
   };
 
@@ -146,7 +122,7 @@ const PostList = () => {
                   key={index}
                   post={post}
                   order={index}
-                  quantity={quantity}
+                  currentPage={currentPage}
                   urlType={urlType}
                 />
               ))
@@ -157,32 +133,14 @@ const PostList = () => {
                   key={index}
                   post={post}
                   order={index}
-                  quantity={quantity}
+                  currentPage={currentPage}
                   urlType={urlType}
                 />
               ))}
         </ItemWrapper>
       </Wrapper>
-      <PageNation>
-        <p onClick={prevPage}>prev</p>
-        <p>page {`${quantity / 20}/10`}</p>
-        <p onClick={nextPage}>more</p>
-      </PageNation>
-      <SearchField>
-        <TextInput
-          type={"text"}
-          label={" 検索"}
-          onChange={inputSearch}
-          value={query}
-          required={false}
-        />
-
-        <FontAwesomeIcon
-          onClick={() => Search(query)}
-          icon={faSearch}
-          style={{ fontSize: 28 }}
-        />
-      </SearchField>
+      <PageNation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <SearchField query={query} onChange={inputSearch} search={Search} />
     </section>
   );
 };

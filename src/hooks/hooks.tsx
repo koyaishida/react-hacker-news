@@ -4,7 +4,7 @@ import { Post } from "../reducks/posts/types";
 
 export const useDataApi = (
   urlType: string,
-  quantity: number,
+  currentPage: number,
   ref: React.RefObject<HTMLDivElement>
 ): [
   { posts?: Post[] },
@@ -12,7 +12,7 @@ export const useDataApi = (
 ] => {
   const [posts, setPosts] = useState<Post[]>();
   const page = (id: any, index: number) => {
-    if (index >= quantity - 20 && index < quantity) {
+    if (index >= currentPage * 20 - 20 && index < currentPage * 20) {
       return true;
     } else {
       return false;
@@ -33,7 +33,7 @@ export const useDataApi = (
           setPosts(posts);
         });
     }
-  }, [urlType, quantity]);
+  }, [urlType, currentPage]);
 
   return [{ posts }, { setPosts }];
 };
