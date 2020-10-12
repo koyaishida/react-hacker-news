@@ -1,6 +1,6 @@
 import React from "react";
-import { Post } from "../../reducks/posts/types";
-import { getElapsedTime } from "../../reducks/posts/operation";
+import { Post } from "../../.lib/posts";
+import { getElapsedTime } from "../../.lib/posts";
 import { addBookmark } from "../../reducks/user/operation";
 import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
 import styled from "styled-components";
@@ -63,7 +63,7 @@ const PostListItem: React.FC<Props> = ({
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
-  const bookmarkedPosts: any = getBookmarkedPosts(selector);
+  const bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
 
   const deleteBookmarkedPost = (id: string) => {
     return db
@@ -74,7 +74,7 @@ const PostListItem: React.FC<Props> = ({
       .delete();
   };
 
-  const bookmarkedIds = bookmarkedPosts.map((bookmarkedPost: any) => {
+  const bookmarkedIds = bookmarkedPosts.map((bookmarkedPost: Post) => {
     return bookmarkedPost.id;
   });
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchPostIds, getPost } from "../reducks/posts/operation";
-import { Post } from "../reducks/posts/types";
+import { fetchPostIds, getPost } from "../.lib/posts";
+import { Post, URL_TYPE } from "../.lib/posts";
 
 export const useDataApi = (
-  urlType: string,
+  urlType: URL_TYPE,
   currentPage: number,
   ref: React.RefObject<HTMLDivElement>
 ): [

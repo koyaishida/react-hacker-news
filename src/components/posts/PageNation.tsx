@@ -13,15 +13,10 @@ type Props = {
 
 const PageNation: React.FC<Props> = ({ currentPage, setCurrentPage }) => {
   const prevPage = useCallback(() => {
-    setCurrentPage((prevCurrentPage) =>
-      currentPage !== 1 ? prevCurrentPage - 1 : 1
-    );
+    setCurrentPage((prevCurrentPage) => prevCurrentPage - 1);
   }, []);
 
   const nextPage = useCallback(() => {
-    if (currentPage === 10) {
-      return;
-    }
     setCurrentPage((prevCurrentPage) => prevCurrentPage + 1);
   }, []);
 

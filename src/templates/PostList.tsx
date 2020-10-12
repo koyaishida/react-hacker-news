@@ -2,13 +2,11 @@ import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
 import { PostListItem, PageNation, SearchField } from "../components/posts";
-import { Post } from "../reducks/posts/types";
+import { Post, URL_TYPE } from "../.lib/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { TextInput } from "../components/UIkit";
-import { fetchPostIds, getPost } from "../reducks/posts/operation";
-// import { faSearch } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fetchPostIds, getPost } from "../.lib/posts";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -50,7 +48,7 @@ const ButtonText = styled.p<{ isActive: boolean }>`
 `;
 
 const PostList = () => {
-  const [urlType, setUrlType] = useState("top");
+  const [urlType, setUrlType] = useState<URL_TYPE>("top");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [query, setQuery] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);

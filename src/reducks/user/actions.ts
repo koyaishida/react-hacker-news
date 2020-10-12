@@ -1,5 +1,5 @@
 import { UserState } from "./types";
-import { Post } from "../posts/types";
+import { Post } from "../../.lib/posts";
 export const ActionTypes = {
   SIGN_IN: "SIGN_IN",
   SIGN_OUT: "SIGN_OUT",

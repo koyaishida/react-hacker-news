@@ -4,7 +4,7 @@ import { signOut } from "../../reducks/user/operation";
 import styled from "styled-components";
 import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
 import { fetchBookmarkedPosts } from "../../reducks/user/operation";
-import { Post } from "../../reducks/posts/types";
+import { Post } from "../../.lib/posts";
 import { db } from "../../firebase/index";
 
 type Props = {
