@@ -44,7 +44,7 @@ export const getUserProfile = async (id: string) => {
 };
 
 export const getElapsedTime = (timestamp: number) => {
-  const date: any = new Date();
+  const date: Date = new Date();
   const current_time = date.getTime();
   const seconds: number = Math.floor((current_time - timestamp * 1000) / 1000);
 

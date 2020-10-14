@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 type Props = {
   query: string;
-  onChange: (event: any) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   search: (search: string) => void;
 };
 

@@ -10,6 +10,7 @@ import PostList from "../src/templates/PostList";
 describe("App", () => {
   test("renders App component", () => {
     render(<PostList />);
+
     // const menu = getByText(/bookmark/) as HTMLButtonElement
   });
 });

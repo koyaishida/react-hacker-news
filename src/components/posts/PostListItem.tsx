@@ -1,6 +1,6 @@
 import React from "react";
-import { Post } from "../../.lib/posts";
-import { getElapsedTime } from "../../.lib/posts";
+import { Post } from "../../.helper/posts";
+import { getElapsedTime } from "../../.helper/posts";
 import { addBookmark } from "../../reducks/user/operation";
 import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
 import styled from "styled-components";

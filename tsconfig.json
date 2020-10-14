@@ -15,5 +15,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "include": ["src", "src/.lib/operation.tsx"]
+  "include": ["src", "src/.helper/operation.tsx"]
 }

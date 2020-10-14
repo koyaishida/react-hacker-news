@@ -2,11 +2,11 @@ import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
 import { PostListItem, PageNation, SearchField } from "../components/posts";
-import { Post, URL_TYPE } from "../.lib/posts";
+import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { TextInput } from "../components/UIkit";
-import { fetchPostIds, getPost } from "../.lib/posts";
+import { fetchPostIds, getPost } from "../.helper/posts";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -70,12 +70,12 @@ const PostList = () => {
   ];
 
   const Search = (search: string) => {
-    const searchedPosts: any = [];
+    const searchedPosts: Post[] = [];
     fetchPostIds(urlType)
       .then((ids) => ids.map((id: number) => getPost(id)))
-      .then((promises: any) => Promise.all(promises))
-      .then((posts: any) => {
-        posts?.filter((item: any) => {
+      .then((promises: Promise<Post>[]) => Promise.all(promises))
+      .then((posts: Post[]) => {
+        posts?.filter((item: Post) => {
           if (item.title.indexOf(search) > 0) {
             searchedPosts.push(item);
           } else {
@@ -115,7 +115,7 @@ const PostList = () => {
         <ItemWrapper ref={ref}>
           {urlType === "bookmark"
             ? bookmarkedPosts.length > 0 &&
-              bookmarkedPosts.map((post: any, index: number) => (
+              bookmarkedPosts.map((post: Post, index: number) => (
                 <PostListItem
                   key={index}
                   post={post}
@@ -126,7 +126,7 @@ const PostList = () => {
               ))
             : posts &&
               posts.length > 0 &&
-              posts.map((post: any, index: number) => (
+              posts.map((post: Post, index: number) => (
                 <PostListItem
                   key={index}
                   post={post}
