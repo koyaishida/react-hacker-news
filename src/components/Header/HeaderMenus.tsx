@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../reducks/user/operation";
 import styled from "styled-components";
@@ -42,8 +42,8 @@ const HeaderMenus: React.FC<Props> = ({ username, email }) => {
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
   const dispatch = useDispatch();
-  let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
   useEffect(() => {
+    let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
     const unsubscribe = db
       .collection("user")
       .doc(uid)
@@ -52,6 +52,7 @@ const HeaderMenus: React.FC<Props> = ({ username, email }) => {
         snapshots.docChanges().forEach((change) => {
           const post = change.doc.data() as Post;
           const changeType = change.type;
+          
 
           switch (changeType) {
             case "added":

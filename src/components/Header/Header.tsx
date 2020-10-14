@@ -1,15 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback} from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
-import { signOut } from "../../reducks/user/operation";
 import {
   getIsSignedIn,
   getUsername,
   getEmail,
 } from "../../reducks/user/selector";
 import HeaderMenus from "./HeaderMenus";
-import { TextInput } from "../UIkit/index";
 
 const Wrapper = styled.div`
   display: flex;
@@ -55,7 +53,7 @@ const Header = () => {
   const path = selector.router.location.pathname;
   const dispatch = useDispatch();
 
-  const goToHome = useCallback(() => dispatch(push("/")), []);
+  const goToHome = useCallback(() => dispatch(push("/")), [dispatch]);
 
   return (
     <Wrapper>

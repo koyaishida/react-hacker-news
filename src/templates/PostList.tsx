@@ -5,18 +5,18 @@ import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
-import { TextInput } from "../components/UIkit";
 import { fetchPostIds, getPost } from "../.helper/posts";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 `;
-const TagsWrapper = styled.div`
+const MenuBar = styled.div`
   display: flex;
   margin-bottom: 8px;
   width: 100%;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  background-color: #303e59;
 `;
 const ItemWrapper = styled.div`
   padding: 24px;
@@ -24,7 +24,7 @@ const ItemWrapper = styled.div`
   height: 840px;
 `;
 
-const Button = styled.button<{ isActive: boolean }>`
+const ToggleButton = styled.button<{ isActive: boolean }>`
   width: 20%;
   background-color: #303e59;
   color: ${({ isActive }) => (isActive ? `#04a4eb` : `#ffffff`)};
@@ -37,6 +37,7 @@ const Button = styled.button<{ isActive: boolean }>`
     color: #04a4eb;
     cursor: pointer;
   }
+  display: ${({ disabled }) => (disabled && "none" )};
 `;
 
 const ButtonText = styled.p<{ isActive: boolean }>`
@@ -98,9 +99,9 @@ const PostList = () => {
   return (
     <section>
       <Wrapper>
-        <TagsWrapper>
+        <MenuBar>
           {menus.map((menu, index) => (
-            <Button
+            <ToggleButton
               isActive={urlType === menu.type}
               onClick={() => menu.func(menu.type)}
               key={index}
@@ -109,9 +110,9 @@ const PostList = () => {
               <ButtonText isActive={urlType === menu.type}>
                 {menu.label}
               </ButtonText>
-            </Button>
+            </ToggleButton>
           ))}
-        </TagsWrapper>
+        </MenuBar>
         <ItemWrapper ref={ref}>
           {urlType === "bookmark"
             ? bookmarkedPosts.length > 0 &&
@@ -123,8 +124,9 @@ const PostList = () => {
                   currentPage={currentPage}
                   urlType={urlType}
                 />
-              ))
-            : posts &&
+              )) 
+            :
+             posts &&
               posts.length > 0 &&
               posts.map((post: Post, index: number) => (
                 <PostListItem

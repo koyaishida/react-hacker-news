@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router";
 import { PostList, UserPage, SignIn, SignUp } from "./templates";
-import Auth from "./Auth";
+// import Auth from "./Auth";
 
 const Router = () => {
   return (

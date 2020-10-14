@@ -59,7 +59,7 @@ const PostListItem: React.FC<Props> = ({
   currentPage,
   urlType,
 }) => {
-  const { title, by, descendants, time, url, kids, bookmarkId, id } = post;
+  const { title, by, descendants, time, url, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);

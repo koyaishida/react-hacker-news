@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostIds, getPost } from "../.helper/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
+// import { useSelector } from "react-redux";
+// import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
 
 export const useDataApi = (
   urlType: URL_TYPE,
@@ -11,6 +13,7 @@ export const useDataApi = (
   { setPosts: React.Dispatch<React.SetStateAction<Post[] | undefined>> }
 ] => {
   const [posts, setPosts] = useState<Post[]>();
+  // const selector = useSelector((state) => state);
   const page = (id: number, index: number) => {
     if (index >= currentPage * 20 - 20 && index < currentPage * 20) {
       return true;
@@ -21,6 +24,8 @@ export const useDataApi = (
 
   useEffect(() => {
     if (urlType === "bookmark") {
+      // const bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
+      // setPosts(bookmarkedPosts)
       return;
     } else {
       fetchPostIds(urlType)
