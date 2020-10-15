@@ -87,7 +87,7 @@ const PostList = () => {
       });
   };
 
-  let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
+   let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
 
   const inputSearch = useCallback(
     (event) => {
@@ -95,6 +95,7 @@ const PostList = () => {
     },
     [setQuery]
   );
+  
 
   return (
     <section>
@@ -126,7 +127,7 @@ const PostList = () => {
                 />
               )) 
             :
-             posts &&
+            posts &&
               posts.length > 0 &&
               posts.map((post: Post, index: number) => (
                 <PostListItem

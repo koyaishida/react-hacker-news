@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { TextInput, PrimaryButton } from "../components/UIkit";
 import { signIn } from "../reducks/user/operation";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { push } from "connected-react-router";
 import styled from "styled-components";
 
@@ -12,7 +12,6 @@ const Wrapper = styled.div`
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state);
 
   const [email, setEmail] = useState(""),
     [password, setPassword] = useState("");
@@ -57,9 +56,6 @@ const SignIn = () => {
         <p onClick={() => dispatch(push("/signup"))}>
           アカウントをお持ちでない方はこちら
         </p>
-        {/* <p onClick={() => dispatch(push("/signIn/reset"))}>
-          パスワードを忘れた方はこちら
-        </p> */}
       </div>
     </Wrapper>
   );
