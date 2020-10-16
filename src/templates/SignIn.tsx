@@ -25,7 +25,7 @@ const SignIn = () => {
 
   const inputPassword = useCallback(
     (event) => {
-      setPassword(event.target.value);
+    setPassword(event.target.value);
     },
     [setPassword]
   );

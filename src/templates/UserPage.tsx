@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getUserProfile, getElapsedTime } from "../.helper/posts";
+import { fetchUserProfile, getElapsedTime } from "../.helper/posts";
 
 const UserMyPage = () => {
   const selector = useSelector((state) => state);
@@ -13,7 +13,7 @@ const UserMyPage = () => {
   const [karma, setKarma] = useState<number>();
 
   useEffect(() => {
-    getUserProfile(id).then((profile) => {
+    fetchUserProfile(id).then((profile) => {
       setName(profile.id);
       setAbout(profile.about);
       setCreated(profile.created);

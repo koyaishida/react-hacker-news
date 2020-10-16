@@ -56,6 +56,7 @@ type Props = {
 const PostListItem: React.FC<Props> = ({
   post,
   order,
+
   currentPage,
   urlType,
 }) => {
@@ -102,6 +103,7 @@ const PostListItem: React.FC<Props> = ({
         <div>
           {urlType === "bookmark" && bookmarkId ? (
             <FontAwesomeIcon
+              data-testid="delete"
               onClick={() => deleteBookmarkedPost(bookmarkId)}
               icon={faTrashAlt}
               style={{ fontSize: 32 }}

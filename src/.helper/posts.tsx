@@ -31,13 +31,13 @@ export const fetchPostIds: (
   return response.data;
 };
 
-export const getPost = async (id: number | string) => {
+export const fetchPost = async (id: number | string) => {
   const URL = `https://hacker-news.firebaseio.com/v0/item/${id}.json`;
   const post: AxiosResponse<Post> = await axios.get(URL);
   return post.data;
 };
 
-export const getUserProfile = async (id: string) => {
+export const fetchUserProfile = async (id: string) => {
   const URL = `https://hacker-news.firebaseio.com/v0/user/${id}.json`;
   const posts: AxiosResponse<UserProfile> = await axios.get(URL);
   return posts.data;

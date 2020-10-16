@@ -86,7 +86,6 @@ export const signIn = (email: string, password: string) => {
             if (data === undefined) {
               return null;
             }
-            console.log(data);
 
             dispatch(
               signInAction({

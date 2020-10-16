@@ -13,6 +13,7 @@ const history = History.createBrowserHistory();
 //ここでのcreateStoreは"./reducks/store/store"からimportした関数をここで実行
 export const store = createStore(history);
 
+
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>

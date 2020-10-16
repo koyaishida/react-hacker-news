@@ -5,7 +5,7 @@ import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
-import { fetchPostIds, getPost } from "../.helper/posts";
+import { fetchPostIds, fetchPost } from "../.helper/posts";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -37,7 +37,7 @@ const ToggleButton = styled.button<{ isActive: boolean }>`
     color: #04a4eb;
     cursor: pointer;
   }
-  display: ${({ disabled }) => (disabled && "none" )};
+  display: ${({ disabled }) => disabled && "none"};
 `;
 
 const ButtonText = styled.p<{ isActive: boolean }>`
@@ -73,7 +73,7 @@ const PostList = () => {
   const Search = (search: string) => {
     const searchedPosts: Post[] = [];
     fetchPostIds(urlType)
-      .then((ids) => ids.map((id: number) => getPost(id)))
+      .then((ids) => ids.map((id: number) => fetchPost(id)))
       .then((promises: Promise<Post>[]) => Promise.all(promises))
       .then((posts: Post[]) => {
         posts?.filter((item: Post) => {
@@ -87,7 +87,7 @@ const PostList = () => {
       });
   };
 
-   let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
+  let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
 
   const inputSearch = useCallback(
     (event) => {
@@ -95,7 +95,6 @@ const PostList = () => {
     },
     [setQuery]
   );
-  
 
   return (
     <section>
@@ -125,9 +124,8 @@ const PostList = () => {
                   currentPage={currentPage}
                   urlType={urlType}
                 />
-              )) 
-            :
-            posts &&
+              ))
+            : posts &&
               posts.length > 0 &&
               posts.map((post: Post, index: number) => (
                 <PostListItem
