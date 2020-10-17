@@ -1,6 +1,10 @@
 import React, { useState, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
-import { getBookmarkedPosts, getIsSignedIn } from "../reducks/user/selector";
+import {
+  getBookmarkedPosts,
+  getIsSignedIn,
+  getUserId,
+} from "../reducks/user/selector";
 import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
@@ -54,7 +58,8 @@ const PostList = () => {
   const [query, setQuery] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
   const selector = useSelector((state) => state);
-  const isSignedIn = getIsSignedIn(selector);
+  // const isSignedIn = getIsSignedIn(selector);
+  const uid = getUserId(selector);
   const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage, ref);
 
   const toggleUrlType = useCallback((type) => {
@@ -105,7 +110,7 @@ const PostList = () => {
               isActive={urlType === menu.type}
               onClick={() => menu.func(menu.type)}
               key={index}
-              disabled={menu.type === "bookmark" && !isSignedIn ? true : false}
+              disabled={menu.type === "bookmark" && !uid ? true : false}
             >
               <ButtonText isActive={urlType === menu.type}>
                 {menu.label}
@@ -123,6 +128,7 @@ const PostList = () => {
                   order={index}
                   currentPage={currentPage}
                   urlType={urlType}
+                  uid={uid}
                 />
               ))
             : posts &&
@@ -134,6 +140,7 @@ const PostList = () => {
                   order={index}
                   currentPage={currentPage}
                   urlType={urlType}
+                  uid={uid}
                 />
               ))}
         </ItemWrapper>

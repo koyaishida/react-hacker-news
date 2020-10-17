@@ -2,7 +2,7 @@ import React from "react";
 import { Post } from "../../.helper/posts";
 import { getElapsedTime } from "../../.helper/posts";
 import { addBookmark } from "../../reducks/user/operation";
-import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
+import { getBookmarkedPosts } from "../../reducks/user/selector";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
@@ -46,24 +46,25 @@ const Index = styled.p`
 const ElapsedTime = styled.p`
   margin: 0;
 `;
+
 type Props = {
   post: Post;
   order: number;
   currentPage: number;
   urlType: string;
+  uid: string;
 };
 
 const PostListItem: React.FC<Props> = ({
   post,
   order,
-
   currentPage,
   urlType,
+  uid,
 }) => {
   const { title, by, descendants, time, url, bookmarkId, id } = post;
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
-  const uid = getUserId(selector);
   const bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
 
   const deleteBookmarkedPost = (id: string) => {
@@ -110,12 +111,17 @@ const PostListItem: React.FC<Props> = ({
             />
           ) : bookmarkedIds.indexOf(id) === -1 ? (
             <FontAwesomeIcon
+              data-testid="addBookmark"
               onClick={() => dispatch(addBookmark(post))}
               icon={faBookmark}
               style={{ fontSize: 32 }}
             />
           ) : (
-            <FontAwesomeIcon icon={bookmarked} style={{ fontSize: 32 }} />
+            <FontAwesomeIcon
+              data-testid="bookmarked"
+              icon={bookmarked}
+              style={{ fontSize: 32 }}
+            />
           )}
         </div>
       )}

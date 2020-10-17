@@ -7,7 +7,6 @@ export const ActionTypes = {
 } as const;
 
 export const signInAction = (userState: UserState) => {
-  
   return {
     type: ActionTypes.SIGN_IN,
     payload: {
