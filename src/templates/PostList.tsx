@@ -1,15 +1,12 @@
 import React, { useState, useCallback, useRef } from "react";
-import { useSelector } from "react-redux";
-import {
-  getBookmarkedPosts,
-  getIsSignedIn,
-  getUserId,
-} from "../reducks/user/selector";
+import { useSelector, useDispatch } from "react-redux";
+import { getBookmarkedPosts, getUserId } from "../reducks/user/selector";
 import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { fetchPostIds, fetchPost } from "../.helper/posts";
+import { push } from "connected-react-router";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -55,16 +52,18 @@ const ButtonText = styled.p<{ isActive: boolean }>`
 const PostList = () => {
   const [urlType, setUrlType] = useState<URL_TYPE>("top");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [query, setQuery] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
   const selector = useSelector((state) => state);
-  // const isSignedIn = getIsSignedIn(selector);
   const uid = getUserId(selector);
+  const [query, setQuery] = useState("");
   const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage, ref);
+
+  const dispatch = useDispatch();
 
   const toggleUrlType = useCallback((type) => {
     setUrlType(type);
     setCurrentPage(1);
+    dispatch(push("/?" + type));
   }, []);
 
   const menus = [
