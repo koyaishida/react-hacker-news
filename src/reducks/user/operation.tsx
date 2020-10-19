@@ -49,11 +49,19 @@ export const signUp = (
         bookmark: [],
       };
 
+      const userInitialState = {
+        email: email,
+        uid: uid,
+        username: username,
+        bookmark: [],
+        isSignedIn: true,
+      };
+
       userRef
         .doc(uid)
         .set(userInitialData)
         .then(async () => {
-          console.log("created");
+          dispatch(signInAction(userInitialState));
           dispatch(push("/"));
         })
         .catch((e) => {
@@ -76,7 +84,6 @@ export const signIn = (email: string, password: string) => {
 
       if (user) {
         const uid = user.uid;
-        console.log(uid, "uid");
 
         userRef
           .doc(uid)

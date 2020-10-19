@@ -7,6 +7,7 @@ export const ActionTypes = {
 } as const;
 
 export const signInAction = (userState: UserState) => {
+ 
   return {
     type: ActionTypes.SIGN_IN,
     payload: {
@@ -22,6 +23,7 @@ export const signInAction = (userState: UserState) => {
 type SignInAction = ReturnType<typeof signInAction>;
 
 export const signOutAction = () => {
+  
   return {
     type: ActionTypes.SIGN_OUT,
     payload: {
