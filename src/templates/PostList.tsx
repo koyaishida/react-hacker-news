@@ -1,12 +1,15 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBookmarkedPosts, getUserId } from "../reducks/user/selector";
+
 import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { fetchPostIds, fetchPost } from "../.helper/posts";
 import { push } from "connected-react-router";
+import { db } from "../firebase/index";
+import { fetchBookmarkedPosts } from "../reducks/user/operation";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -57,7 +60,6 @@ const PostList = () => {
   const uid = getUserId(selector);
   const [query, setQuery] = useState("");
   const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage, ref);
-
   const dispatch = useDispatch();
 
   const toggleUrlType = useCallback((type) => {
@@ -65,7 +67,6 @@ const PostList = () => {
     setCurrentPage(1);
     dispatch(push("/?" + type));
   }, []);
-
   const menus = [
     { label: "TOP", func: toggleUrlType, type: "top" },
     { label: "NEW", func: toggleUrlType, type: "new" },
@@ -144,7 +145,10 @@ const PostList = () => {
               ))}
         </ItemWrapper>
       </Wrapper>
-      <PageNation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      {urlType !== "bookmark" && (
+        <PageNation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      )}
+
       <SearchField query={query} onChange={inputSearch} search={Search} />
     </section>
   );

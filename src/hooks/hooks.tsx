@@ -12,7 +12,7 @@ export const useDataApi = (
 ] => {
   const [posts, setPosts] = useState<Post[]>();
 
-  const isDisplayOnPage = (id: number, index: number) => {
+  const filterDisplayOnPage = (id: number, index: number) => {
     if (index >= currentPage * 20 - 20 && index < currentPage * 20) {
       return true;
     } else {
@@ -25,7 +25,7 @@ export const useDataApi = (
       return;
     } else {
       fetchPostIds(urlType)
-        .then((ids) => ids.filter(isDisplayOnPage))
+        .then((ids) => ids.filter(filterDisplayOnPage))
         .then((ids) => ids.map((id: number) => fetchPost(id)))
         .then((promises: Promise<Post>[]) => Promise.all(promises))
         .then((posts: Post[]) => {

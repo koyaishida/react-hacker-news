@@ -52,7 +52,6 @@ const HeaderMenus: React.FC<Props> = ({ username, email }) => {
         snapshots.docChanges().forEach((change) => {
           const post = change.doc.data() as Post;
           const changeType = change.type;
-          
 
           switch (changeType) {
             case "added":

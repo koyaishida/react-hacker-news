@@ -1,25 +1,24 @@
 import React from "react";
-import { render, screen, } from "@testing-library/react";
 import { PostListItem } from "../components/posts";
-import { Provider } from "react-redux";
+import deleteBookmarkedPost from "../components/posts/PostListItem"
 import createStore from "../reducks/store/store";
 import * as History from "history";
-import { fetchBookmarkedPostsAction } from "../reducks/user/actions"
-import { UserReducer } from "../reducks/user/reducers"
-// import configureMockStore from 'redux-mock-store'
-// import thunk from 'redux-thunk'
-
-// const middlewares = [thunk]
-// const mockStore = configureMockStore(middlewares)
+import { fetchBookmarkedPostsAction, signInAction } from "../reducks/user/actions"
+import { getBookmarkedPosts } from "../reducks/user/selector"
+import { testRender } from "./helpers.js"
+import userEvent from "@testing-library/user-event"
 
 
-describe("PostListItem rendering", () => {
+
+describe("PostListItem rendering test", () => {
   let store;
 
   beforeEach(() => {
     const history = History.createBrowserHistory();
     store = createStore(history);
   });
+
+
   let dummyPost = {
     by: "dhouston",
     descendants: 71,
@@ -35,96 +34,109 @@ describe("PostListItem rendering", () => {
 
 
 
-  it("should render icon only delete, with uid && bookmark", () => {
+  it("should render dummyPost and  icon only delete, with uid && bookmark", () => {
+    const testPayload = [
+      {
+        by: "dhouston",
+        descendants: 71,
+        id: 8863,
+        kids: [8952, 9224],
+        score: 111,
+        time: 1175714200,
+        title: "My YC app: Dropbox - Throw away your USB drive",
+        type: "story",
+        url: "http://www.getdropbox.com/u/2/screencast.html",
+        bookmarkId: "aaaa"
+      }, {
+        by: "user",
+        descendants: 71,
+        id: 8861,
+        kids: [8952, 9224],
+        score: 111,
+        time: 1175714200,
+        title: "title",
+        type: "story",
+        url: "http://www.getdropbox.com/u/2/screencast.html",
+        bookmarkId: "aaaa"
+      }
+    ]
 
-    render(
-      <Provider store={store}>
-        <PostListItem
-          post={dummyPost}
-          order={0}
-          currentPage={1}
-          urlType={"bookmark"}
-          uid={"uid"}
-        ></PostListItem>
-      </Provider>
-    )
+    store.dispatch(fetchBookmarkedPostsAction(testPayload));
+    const { getByTestId, queryByTestId, queryByText } = testRender(<PostListItem post={dummyPost}
+      order={0}
+      currentPage={1}
+      urlType={"bookmark"}
+      uid={"uid"} />, { store });
 
-    expect(
-      screen.queryByText("My YC app: Dropbox - Throw away your USB drive")
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("delete"))
-    expect(screen.queryByTestId("bookmarked")).toBeFalsy()
-    expect(screen.queryByTestId("addBookmark")).toBeFalsy()
+
+
+    expect(queryByText("My YC app: Dropbox - Throw away your USB drive")).toBeInTheDocument();
+    expect(queryByText("by dhouston")).toBeInTheDocument();
+    expect(queryByText("comments 71")).toBeInTheDocument();
+    expect(queryByText("13 years ago")).toBeInTheDocument();
+
+    expect(getByTestId("delete")).toBeTruthy()
+    expect(queryByTestId("bookmarked")).toBeFalsy()
+    expect(queryByTestId("addBookmark")).toBeFalsy()
+
+    userEvent.click(getByTestId("delete"));
+    expect(deleteBookmarkedPost).toHaveBeenCalled()
+
+
+
+
   })
 
+
   it("should render icon only addBookmark, with uid && top", () => {
+    const testPayload = [
+      {
+        by: "dhouston",
+        descendants: 71,
+        id: 8862,
+        kids: [8952, 9224],
+        score: 111,
+        time: 1175714200,
+        title: "My YC app: Dropbox - Throw away your USB drive",
+        type: "story",
+        url: "http://www.getdropbox.com/u/2/screencast.html",
+        bookmarkId: "aaaa"
+      }, {
+        by: "user",
+        descendants: 71,
+        id: 8861,
+        kids: [8952, 9224],
+        score: 111,
+        time: 1175714200,
+        title: "title",
+        type: "story",
+        url: "http://www.getdropbox.com/u/2/screencast.html",
+        bookmarkId: "aaaa"
+      }
+    ]
+    const signInState = {
+      isSignedIn: true,
+      uid: "uid",
+      username: "username",
+      email: "email",
+      bookmark: testPayload,
+    }
 
-    dummyPost = {
-      by: "dhouston",
-      descendants: 71,
-      id: 8863,
-      kids: [8952, 9224],
-      score: 111,
-      time: 1175714200,
-      title: "My YC app: Dropbox - Throw away your USB drive",
-      type: "story",
-      url: "http://www.getdropbox.com/u/2/screencast.html",
-      // bookmarkId: "aaaa"
-    };
+    store.dispatch(signInAction(signInState));
+    const { getByTestId, queryByTestId } = testRender(<PostListItem post={dummyPost}
+      order={0}
+      currentPage={1}
+      urlType={"top"}
+      uid={"uid"} />, { store });
 
-    render(
-      <Provider store={store}>
-        <PostListItem
-          post={dummyPost}
-          order={0}
-          currentPage={1}
-          urlType={"top"}
-          uid={"uid"}
-        ></PostListItem>
-      </Provider>
-    )
+    expect(getByTestId("addBookmark")).toBeTruthy()
+    expect(queryByTestId("bookmarked")).toBeFalsy()
+    expect(queryByTestId("delete")).toBeFalsy()
 
-    expect(
-      screen.queryByText("My YC app: Dropbox - Throw away your USB drive")
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("addBookmark"))
-    expect(screen.queryByTestId("bookmarked")).toBeFalsy()
-    expect(screen.queryByTestId("delete")).toBeFalsy()
   })
 
-  it("should render icon only addBookmark, with uid && top", () => {
 
-    dummyPost = {
-      by: "dhouston",
-      descendants: 71,
-      id: 8863,
-      kids: [8952, 9224],
-      score: 111,
-      time: 1175714200,
-      title: "My YC app: Dropbox - Throw away your USB drive",
-      type: "story",
-      url: "http://www.getdropbox.com/u/2/screencast.html",
-      bookmarkId: "aaaa"
-    };
-
-    render(
-      <Provider store={store}>
-        <PostListItem
-          post={dummyPost}
-          order={0}
-          currentPage={1}
-          urlType={"top"}
-          uid={"uid"}
-        ></PostListItem>
-      </Provider>
-    )
-
-    expect(
-      screen.queryByText("My YC app: Dropbox - Throw away your USB drive")
-    ).toBeInTheDocument();
-    // expect(screen.getByTestId("bookmarked"))
-    // expect(screen.queryByTestId("addBookmark")).toBeFalsy()
-    // expect(screen.queryByTestId("delete")).toBeFalsy()
+  it("should render icon only bookmarked, with uid && top", () => {
 
     const testPayload = [
       {
@@ -139,53 +151,34 @@ describe("PostListItem rendering", () => {
         url: "http://www.getdropbox.com/u/2/screencast.html",
         bookmarkId: "aaaa"
       }, {
-        by: "dhouston",
+        by: "user",
         descendants: 71,
-        id: 8863,
+        id: 8861,
         kids: [8952, 9224],
         score: 111,
         time: 1175714200,
-        title: "My YC app: Dropbox - Throw away your USB drive",
+        title: "title",
         type: "story",
         url: "http://www.getdropbox.com/u/2/screencast.html",
         bookmarkId: "aaaa"
       }
     ]
 
-    // const expectedAction = {
-    //   type: ActionTypes.FETCH_BOOKMARKED_POSTS,
-    //   payload: testPayload
-    // }
 
-    let initialState = {
-      username: "koya",
-      email: "mail",
-      uid: "uid",
-      isSignedIn: true,
-      bookmark: []
-    }
 
-    // expect(fetchBookmarkedPostsAction(testPayload)).toEqual(expectedAction)
-    const state = UserReducer(initialState, fetchBookmarkedPostsAction(testPayload))
+    store.dispatch(fetchBookmarkedPostsAction(testPayload));
+    const { getByTestId, queryByTestId } = testRender(<PostListItem post={dummyPost}
+      order={0}
+      currentPage={1}
+      urlType={"top"}
+      uid={"uid"} />, { store });
 
-    expect(state.bookmark.length).toEqual(2);
-    render(
-      <Provider store={store}>
-        <PostListItem
-          post={dummyPost}
-          order={0}
-          currentPage={1}
-          urlType={"top"}
-          uid={"uid"}
-        ></PostListItem>
-      </Provider>
-    )
-    expect(screen.getByTestId("bookmarked"))
-    expect(screen.queryByTestId("addBookmark")).toBeFalsy()
-    expect(screen.queryByTestId("delete")).toBeFalsy()
 
-  })
+    expect(getByTestId("bookmarked")).toBeTruthy()
+    expect(queryByTestId("addBookmark")).toBeFalsy()
+    expect(queryByTestId("delete")).toBeFalsy()
 
+  });
 
 
 });

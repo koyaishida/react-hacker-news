@@ -91,10 +91,11 @@ const PostListItem: React.FC<Props> = ({
           <Link
             onClick={() => dispatch(push("/user/" + by))}
           >{`by ${by}`}</Link>
-
-          <Link
-            href={`https://news.ycombinator.com/item?id=${id}`}
-          >{`comments ${descendants}`}</Link>
+          {urlType !== "job" && (
+            <Link
+              href={`https://news.ycombinator.com/item?id=${id}`}
+            >{`comments ${descendants}`}</Link>
+          )}
 
           <ElapsedTime>{getElapsedTime(time)}</ElapsedTime>
         </DetailWrapper>
