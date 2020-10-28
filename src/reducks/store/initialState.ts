@@ -6,6 +6,10 @@ const initialState = {
     bookmark: [],
     isSignedIn: false,
   },
+  loading: {
+    isLoading:false,
+    text:"loading,,,,"
+  }
 };
 
 export default initialState;

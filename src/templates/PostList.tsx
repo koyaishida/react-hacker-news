@@ -1,15 +1,17 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBookmarkedPosts, getUserId } from "../reducks/user/selector";
-
 import { PostListItem, PageNation, SearchField } from "../components/posts";
 import { Post, URL_TYPE } from "../.helper/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
 import { fetchPostIds, fetchPost } from "../.helper/posts";
 import { push } from "connected-react-router";
-import { db } from "../firebase/index";
-import { fetchBookmarkedPosts } from "../reducks/user/operation";
+import { Loading } from "../components/UIkit";
+import {
+  showLoadingAction,
+  hideLoadingAction,
+} from "../reducks/loading/actions";
 
 const Wrapper = styled.section`
   background-color: #ffffff;
@@ -55,11 +57,11 @@ const ButtonText = styled.p<{ isActive: boolean }>`
 const PostList = () => {
   const [urlType, setUrlType] = useState<URL_TYPE>("top");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const ref = useRef<HTMLDivElement>(null);
+  // const ref = useRef<HTMLDivElement>(null);
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
   const [query, setQuery] = useState("");
-  const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage, ref);
+  const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage);
   const dispatch = useDispatch();
 
   const toggleUrlType = useCallback((type) => {
@@ -67,6 +69,7 @@ const PostList = () => {
     setCurrentPage(1);
     dispatch(push("/?" + type));
   }, []);
+
   const menus = [
     { label: "TOP", func: toggleUrlType, type: "top" },
     { label: "NEW", func: toggleUrlType, type: "new" },
@@ -75,8 +78,21 @@ const PostList = () => {
     { label: "BOOKMARK", func: toggleUrlType, type: "bookmark" },
   ];
 
+  useEffect(() => {
+    try {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      window.scrollTo(0, 0);
+    }
+  }, [urlType, currentPage]);
+
   const Search = (search: string) => {
     const searchedPosts: Post[] = [];
+    dispatch(showLoadingAction("Searching....."));
     fetchPostIds(urlType)
       .then((ids) => ids.map((id: number) => fetchPost(id)))
       .then((promises: Promise<Post>[]) => Promise.all(promises))
@@ -88,7 +104,9 @@ const PostList = () => {
             return;
           }
         });
+        dispatch(hideLoadingAction());
         setPosts(searchedPosts);
+        setCurrentPage(1);
       });
   };
 
@@ -118,37 +136,38 @@ const PostList = () => {
             </ToggleButton>
           ))}
         </MenuBar>
-        <ItemWrapper ref={ref}>
-          {urlType === "bookmark"
-            ? bookmarkedPosts.length > 0 &&
-              bookmarkedPosts.map((post: Post, index: number) => (
-                <PostListItem
-                  key={index}
-                  post={post}
-                  order={index}
-                  currentPage={currentPage}
-                  urlType={urlType}
-                  uid={uid}
-                />
-              ))
-            : posts &&
-              posts.length > 0 &&
-              posts.map((post: Post, index: number) => (
-                <PostListItem
-                  key={index}
-                  post={post}
-                  order={index}
-                  currentPage={currentPage}
-                  urlType={urlType}
-                  uid={uid}
-                />
-              ))}
-        </ItemWrapper>
+        <Loading>
+          <ItemWrapper>
+            {urlType === "bookmark"
+              ? bookmarkedPosts.length > 0 &&
+                bookmarkedPosts.map((post: Post, index: number) => (
+                  <PostListItem
+                    key={index}
+                    post={post}
+                    order={index}
+                    currentPage={currentPage}
+                    urlType={urlType}
+                    uid={uid}
+                  />
+                ))
+              : posts &&
+                posts.length > 0 &&
+                posts.map((post: Post, index: number) => (
+                  <PostListItem
+                    key={index}
+                    post={post}
+                    order={index}
+                    currentPage={currentPage}
+                    urlType={urlType}
+                    uid={uid}
+                  />
+                ))}
+          </ItemWrapper>
+        </Loading>
       </Wrapper>
       {urlType !== "bookmark" && (
         <PageNation currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
-
       <SearchField query={query} onChange={inputSearch} search={Search} />
     </section>
   );

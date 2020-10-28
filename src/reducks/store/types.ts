@@ -8,6 +8,10 @@ export type StoreState = {
     bookmark: [];
     isSignedIn: false;
   };
+  loading: {
+    isLoading: boolean
+    text: string
+  }
   router: RouterState;
 };
 

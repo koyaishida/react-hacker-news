@@ -4,7 +4,7 @@ import deleteBookmarkedPost from "../components/posts/PostListItem"
 import createStore from "../reducks/store/store";
 import * as History from "history";
 import { fetchBookmarkedPostsAction, signInAction } from "../reducks/user/actions"
-import { getBookmarkedPosts } from "../reducks/user/selector"
+// import { getBookmarkedPosts } from "../reducks/user/selector"
 import { testRender } from "./helpers.js"
 import userEvent from "@testing-library/user-event"
 
