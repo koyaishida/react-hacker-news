@@ -10,8 +10,8 @@ service cloud.firestore {
       match /bookmark/{bookmarkId} {
         allow read: if request.auth.uid != null ;
         allow create: if true ;
-        allow update: if request.auth.uid == bookmarkId ;
-        allow delete: if request.auth.uid == bookmarkId ;
+        allow update: if request.auth.uid == userId ;
+        allow delete: if request.auth.uid == userId ;
       }
       }
   }

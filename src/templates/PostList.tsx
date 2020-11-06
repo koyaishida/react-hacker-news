@@ -7,8 +7,8 @@ import { useDataApi } from "../hooks/hooks";
 import { fetchPostIds, fetchPost } from "../.helper/posts";
 import { push } from "connected-react-router";
 import { Loading } from "../components/UIkit";
-// import { fetchBookmarkedPosts } from "../reducks/user/operation";
-// import { db } from "../firebase/index";
+import { fetchBookmarkedPosts } from "../reducks/user/operation";
+import { db } from "../firebase/index";
 import {
   showLoadingAction,
   hideLoadingAction,
@@ -97,6 +97,43 @@ const PostList = () => {
   ];
 
   useEffect(() => {
+    if (uid) {
+      let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
+      const unsubscribe = db
+        .collection("user")
+        .doc(uid)
+        .collection("bookmark")
+        .onSnapshot((snapshots) => {
+          snapshots.docChanges().forEach((change) => {
+            const post = change.doc.data() as Post;
+            const changeType = change.type;
+
+            switch (changeType) {
+              case "added":
+                bookmarkedPosts.push(post);
+                break;
+              case "modified":
+                const index = bookmarkedPosts.findIndex(
+                  (post: Post) => post.bookmarkId === change.doc.id
+                );
+                bookmarkedPosts[index] = post;
+                break;
+              case "removed":
+                bookmarkedPosts = bookmarkedPosts.filter(
+                  (post: Post) => post.bookmarkId !== change.doc.id
+                );
+                break;
+              default:
+                break;
+            }
+          });
+          dispatch(fetchBookmarkedPosts(bookmarkedPosts));
+        });
+      return () => unsubscribe();
+    }
+  }, []);
+
+  useEffect(() => {
     try {
       window.scroll({
         top: 0,
@@ -168,7 +205,7 @@ const PostList = () => {
                 posts.length > 0 &&
                 posts.map((post: Post, index: number) => (
                   <PostListItem
-                    key={index}
+                    key={post.id}
                     post={post}
                     index={index}
                     currentPage={currentPage}

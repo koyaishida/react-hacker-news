@@ -1,6 +1,6 @@
 import * as React from "react";
 import Router from "./router";
-import { Header } from "./components/Header";
+import Header from "./components/header/Header";
 import styled from "styled-components";
 
 const Wrapper = styled.div`

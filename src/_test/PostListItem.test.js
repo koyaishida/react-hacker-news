@@ -1,12 +1,9 @@
 import React from "react";
 import { PostListItem } from "../components/posts";
-import deleteBookmarkedPost from "../components/posts/PostListItem"
 import createStore from "../reducks/store/store";
 import * as History from "history";
 import { fetchBookmarkedPostsAction, signInAction } from "../reducks/user/actions"
-// import { getBookmarkedPosts } from "../reducks/user/selector"
 import { testRender } from "./helpers.js"
-import userEvent from "@testing-library/user-event"
 
 
 
@@ -63,13 +60,14 @@ describe("PostListItem rendering test", () => {
 
     store.dispatch(fetchBookmarkedPostsAction(testPayload));
     const { getByTestId, queryByTestId, queryByText } = testRender(<PostListItem post={dummyPost}
-      order={0}
+      index={0}
       currentPage={1}
       urlType={"bookmark"}
       uid={"uid"} />, { store });
 
 
 
+    expect(queryByText("1")).toBeInTheDocument();
     expect(queryByText("My YC app: Dropbox - Throw away your USB drive")).toBeInTheDocument();
     expect(queryByText("by dhouston")).toBeInTheDocument();
     expect(queryByText("comments 71")).toBeInTheDocument();
@@ -78,12 +76,6 @@ describe("PostListItem rendering test", () => {
     expect(getByTestId("delete")).toBeTruthy()
     expect(queryByTestId("bookmarked")).toBeFalsy()
     expect(queryByTestId("addBookmark")).toBeFalsy()
-
-    userEvent.click(getByTestId("delete"));
-    expect(deleteBookmarkedPost).toHaveBeenCalled()
-
-
-
 
   })
 
@@ -124,7 +116,7 @@ describe("PostListItem rendering test", () => {
 
     store.dispatch(signInAction(signInState));
     const { getByTestId, queryByTestId } = testRender(<PostListItem post={dummyPost}
-      order={0}
+      index={0}
       currentPage={1}
       urlType={"top"}
       uid={"uid"} />, { store });
@@ -168,7 +160,7 @@ describe("PostListItem rendering test", () => {
 
     store.dispatch(fetchBookmarkedPostsAction(testPayload));
     const { getByTestId, queryByTestId } = testRender(<PostListItem post={dummyPost}
-      order={0}
+      index={0}
       currentPage={1}
       urlType={"top"}
       uid={"uid"} />, { store });

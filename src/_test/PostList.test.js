@@ -2,8 +2,10 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import PostList from "../templates/PostList";
 import { Provider } from "react-redux";
+import { testRender } from "./helpers.js"
 import createStore from "../reducks/store/store";
 import * as History from "history";
+import { signInAction } from "../reducks/user/actions"
 
 describe("PostList rendering", () => {
   let store;
@@ -13,15 +15,20 @@ describe("PostList rendering", () => {
   });
 
   it("tagWrapper rendering ", () => {
-    render(
-      <Provider store={store}>
-        <PostList />
-      </Provider>
-    );
+    const signInState = {
+      isSignedIn: true,
+      uid: "uid",
+      username: "username",
+      email: "email",
+      bookmark: [],
+    }
 
-    expect(screen.queryByText("TOP")).toBeInTheDocument();
-    expect(screen.queryByText("NEW")).toBeInTheDocument();
-    expect(screen.queryByText("BEST")).toBeInTheDocument();
-    expect(screen.queryByText("BOOKMARK")).toBeInTheDocument();
+    store.dispatch(signInAction(signInState));
+    const { queryByText } = testRender(<PostList />, { store });
+
+    expect(queryByText("TOP")).toBeInTheDocument();
+    expect(queryByText("NEW")).toBeInTheDocument();
+    expect(queryByText("BEST")).toBeInTheDocument();
+    expect(queryByText("BOOKMARK")).toBeInTheDocument();
   });
 });

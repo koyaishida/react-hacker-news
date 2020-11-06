@@ -1,13 +1,9 @@
-import React, { useCallback} from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
-import {
-  getIsSignedIn,
-  getUsername,
-  getEmail,
-} from "../../reducks/user/selector";
-import HeaderMenus from "./HeaderMenus";
+import { signOut } from "../../reducks/user/operation";
+import { getIsSignedIn, getUsername } from "../../reducks/user/selector";
 
 const Wrapper = styled.div`
   display: flex;
@@ -49,8 +45,6 @@ const Header = () => {
   const selector = useSelector((state) => state);
   const isSignedIn = getIsSignedIn(selector);
   const username = getUsername(selector);
-  const email = getEmail(selector);
-  const path = selector.router.location.pathname;
   const dispatch = useDispatch();
 
   const goToHome = useCallback(() => dispatch(push("/")), [dispatch]);
@@ -58,12 +52,15 @@ const Header = () => {
   return (
     <Wrapper>
       <Logo onClick={goToHome}>HOME</Logo>
-      {!(path === "/signup" || path === "/signin") &&
-        (isSignedIn ? (
-          <HeaderMenus username={username} email={email} />
-        ) : (
-          <Login onClick={() => dispatch(push("/signin"))}>ログインする</Login>
-        ))}
+
+      {isSignedIn ? (
+        <>
+          <p>{username}</p>
+          <Login onClick={() => dispatch(signOut())}>ログアウト</Login>
+        </>
+      ) : (
+        <Login onClick={() => dispatch(push("/signin"))}>ログイン</Login>
+      )}
     </Wrapper>
   );
 };
