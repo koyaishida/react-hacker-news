@@ -1,5 +1,4 @@
 import React from "react";
-import { Post } from "../../.helper/posts";
 import { getElapsedTime } from "../../.helper/posts";
 import { addBookmark } from "../../reducks/user/operation";
 import { getBookmarkedPosts } from "../../reducks/user/selector";
@@ -13,6 +12,7 @@ import {
   faBookmark as bookmarked,
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { Post } from "../../templates/PostList";
 
 const Wrapper = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ const ElapsedTime = styled.p`
 
 type Props = {
   post: Post;
-  order: number;
+  index: number;
   currentPage: number;
   urlType: string;
   uid: string;
@@ -57,7 +57,7 @@ type Props = {
 
 const PostListItem: React.FC<Props> = ({
   post,
-  order,
+  index,
   currentPage,
   urlType,
   uid,
@@ -84,7 +84,7 @@ const PostListItem: React.FC<Props> = ({
     <Wrapper>
       <div>
         <PostTitle>
-          <Index>{order + currentPage * 20 - 19}</Index>
+          <Index>{index + currentPage * 20 - 19}</Index>
           <Link href={url}>{title}</Link>
         </PostTitle>
         <DetailWrapper>

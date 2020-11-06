@@ -1,18 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-
-export type URL_TYPE = "best" | "top" | "new" | "jpb" | "bookmark";
-
-export type Post = {
-  id: number;
-  title: string;
-  by: string;
-  score: number;
-  time: number;
-  url?: string;
-  descendants: number;
-  kids?: number[];
-  bookmarkId?: string;
-};
+import { Post, URL_TYPE } from "../templates/PostList";
 
 export type UserProfile = {
   about: string;

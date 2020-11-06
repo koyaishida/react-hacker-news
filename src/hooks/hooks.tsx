@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchPostIds, fetchPost } from "../.helper/posts";
-import { Post, URL_TYPE } from "../.helper/posts";
+import { Post, URL_TYPE } from "../templates/PostList";
 import { useDispatch } from "react-redux";
 import {
   showLoadingAction,
@@ -10,7 +10,6 @@ import {
 export const useDataApi = (
   urlType: URL_TYPE,
   currentPage: number
-  // ref: React.RefObject<HTMLDivElement>
 ): [
   { posts?: Post[] },
   { setPosts: React.Dispatch<React.SetStateAction<Post[] | undefined>> }
@@ -18,7 +17,7 @@ export const useDataApi = (
   const [posts, setPosts] = useState<Post[]>();
   const dispatch = useDispatch();
 
-  const filterDisplayOnPage = (id: number, index: number) => {
+  const filterDisplayOnPage = (_: number, index: number) => {
     if (index >= currentPage * 20 - 20 && index < currentPage * 20) {
       return true;
     } else {
@@ -29,6 +28,7 @@ export const useDataApi = (
   useEffect(() => {
     dispatch(showLoadingAction());
     if (urlType === "bookmark") {
+      dispatch(hideLoadingAction());
       return;
     } else {
       fetchPostIds(urlType)
@@ -36,8 +36,6 @@ export const useDataApi = (
         .then((ids) => ids.map((id: number) => fetchPost(id)))
         .then((promises: Promise<Post>[]) => Promise.all(promises))
         .then((posts: Post[]) => {
-          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-          // ref.current?.scrollTo({ top: 0, left: 0 });
           setPosts(posts);
           dispatch(hideLoadingAction());
         });

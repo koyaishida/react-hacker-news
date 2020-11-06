@@ -4,8 +4,8 @@ import { signOut } from "../../reducks/user/operation";
 import styled from "styled-components";
 import { getUserId, getBookmarkedPosts } from "../../reducks/user/selector";
 import { fetchBookmarkedPosts } from "../../reducks/user/operation";
-import { Post } from "../../.helper/posts";
 import { db } from "../../firebase/index";
+import { Post } from "../../templates/PostList";
 
 type Props = {
   username: string;
@@ -42,6 +42,7 @@ const HeaderMenus: React.FC<Props> = ({ username, email }) => {
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
   const dispatch = useDispatch();
+
   useEffect(() => {
     let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
     const unsubscribe = db

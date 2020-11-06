@@ -7,7 +7,7 @@ import {
   signOutAction,
   fetchBookmarkedPostsAction,
 } from "./actions";
-import { Post } from "../../.helper/posts";
+import { Post } from "../../templates/PostList";
 import { StoreState } from "../store/types";
 
 const userRef = db.collection("user");

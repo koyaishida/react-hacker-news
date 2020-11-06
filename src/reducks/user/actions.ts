@@ -1,5 +1,5 @@
 import { UserState } from "./types";
-import { Post } from "../../.helper/posts";
+import { Post } from "../../templates/PostList"
 
 export const ActionTypes = {
   SIGN_IN: "SIGN_IN",

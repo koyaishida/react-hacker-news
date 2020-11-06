@@ -1,4 +1,4 @@
-import {Post} from "../../.helper/posts"
+import {Post} from "../../templates/PostList"
 
 export type UserState = {
   isSignedIn: boolean;
