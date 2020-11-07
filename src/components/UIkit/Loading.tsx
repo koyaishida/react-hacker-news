@@ -7,7 +7,7 @@ import {
 } from "../../reducks/loading/selector";
 import styled from "styled-components";
 
-const Wrapper = styled.section`
+const LoadingContainer = styled.section`
   padding: 144px;
   height: 840px;
   display: flex;
@@ -24,7 +24,7 @@ const Loading: React.FC<any> = ({ children }) => {
   return (
     <div>
       {isBeingLoaded ? (
-        <Wrapper>
+        <LoadingContainer>
           <ReactLoading
             type={"spinningBubbles"}
             color="#303e59"
@@ -32,7 +32,7 @@ const Loading: React.FC<any> = ({ children }) => {
             width={216}
           />
           <p>{loadingText}</p>
-        </Wrapper>
+        </LoadingContainer>
       ) : (
         children
       )}

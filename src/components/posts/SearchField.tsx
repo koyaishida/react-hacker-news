@@ -4,7 +4,7 @@ import { TextInput } from "../UIkit";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Wrapper = styled.div`
+const SearchFieldContainer = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
@@ -19,7 +19,7 @@ type Props = {
 
 const SearchField: React.FC<Props> = ({ query, onChange, search }) => {
   return (
-    <Wrapper>
+    <SearchFieldContainer>
       <TextInput
         type={"text"}
         label={" 検索"}
@@ -32,7 +32,7 @@ const SearchField: React.FC<Props> = ({ query, onChange, search }) => {
         icon={faSearch}
         style={{ fontSize: 28 }}
       />
-    </Wrapper>
+    </SearchFieldContainer>
   );
 };
 

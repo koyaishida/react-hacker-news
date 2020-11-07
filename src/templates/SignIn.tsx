@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from "react";
 import { TextInput, PrimaryButton } from "../components/UIkit";
 import { signIn } from "../reducks/user/operation";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const SignInContainer = styled.div`
   padding: 0 100px;
   text-align: center;
 `;
@@ -25,13 +25,13 @@ const SignIn = () => {
 
   const inputPassword = useCallback(
     (event) => {
-    setPassword(event.target.value);
+      setPassword(event.target.value);
     },
     [setPassword]
   );
 
   return (
-    <Wrapper>
+    <SignInContainer>
       <h2 className="u-text__headline u-text-center">ログイン画面</h2>
 
       <TextInput
@@ -57,7 +57,7 @@ const SignIn = () => {
           アカウントをお持ちでない方はこちら
         </p>
       </div>
-    </Wrapper>
+    </SignInContainer>
   );
 };
 

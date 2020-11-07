@@ -14,14 +14,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Post } from "../../templates/PostList";
 
-const Wrapper = styled.div`
+const PostListItemContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 `;
 
-const DetailWrapper = styled.div`
+const PostDetail = styled.div`
   display: flex;
   margin-bottom: 8px;
 `;
@@ -81,13 +81,13 @@ const PostListItem: React.FC<Props> = ({
   });
 
   return (
-    <Wrapper>
+    <PostListItemContainer>
       <div>
         <PostTitle>
           <Index>{index + currentPage * 20 - 19}</Index>
           <Link href={url}>{title}</Link>
         </PostTitle>
-        <DetailWrapper>
+        <PostDetail>
           <Link
             onClick={() => dispatch(push("/user/" + by))}
           >{`by ${by}`}</Link>
@@ -98,7 +98,7 @@ const PostListItem: React.FC<Props> = ({
           )}
 
           <ElapsedTime>{getElapsedTime(time)}</ElapsedTime>
-        </DetailWrapper>
+        </PostDetail>
       </div>
 
       {uid && (
@@ -126,7 +126,7 @@ const PostListItem: React.FC<Props> = ({
           )}
         </div>
       )}
-    </Wrapper>
+    </PostListItemContainer>
   );
 };
 

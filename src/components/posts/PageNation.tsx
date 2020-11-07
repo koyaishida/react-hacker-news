@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const PageNationContainer = styled.div`
   display: flex;
   justify-content: space-around;
 `;
@@ -21,11 +21,11 @@ const PageNation: React.FC<Props> = ({ currentPage, setCurrentPage }) => {
   }, [setCurrentPage]);
 
   return (
-    <Wrapper>
+    <PageNationContainer>
       {currentPage !== 1 ? <p onClick={prevPage}>prev</p> : <div></div>}
       <p>page {`${currentPage}/10`}</p>
       {currentPage !== 10 ? <p onClick={nextPage}>more</p> : <div></div>}
-    </Wrapper>
+    </PageNationContainer>
   );
 };
 

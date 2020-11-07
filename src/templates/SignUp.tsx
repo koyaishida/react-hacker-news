@@ -6,7 +6,7 @@ import { push } from "connected-react-router";
 
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const SignUpContainer = styled.div`
   padding: 0 100px;
   text-align: center;
 `;
@@ -47,7 +47,7 @@ const SignUp = () => {
   );
 
   return (
-    <Wrapper>
+    <SignUpContainer>
       <h2 className="u-text__headline u-text-center">アカウント作成画面</h2>
       <TextInput
         label={"ユーザー名"}
@@ -87,7 +87,7 @@ const SignUp = () => {
       <p onClick={() => dispatch(push("/signin"))}>
         アカウントをお持ちの方はこちら
       </p>
-    </Wrapper>
+    </SignUpContainer>
   );
 };
 

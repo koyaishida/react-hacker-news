@@ -5,7 +5,7 @@ import { push } from "connected-react-router";
 import { signOut } from "../../reducks/user/operation";
 import { getIsSignedIn, getUsername } from "../../reducks/user/selector";
 
-const Wrapper = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: flex-end;
   background-color: #303e59;
@@ -46,22 +46,22 @@ const Header = () => {
   const isSignedIn = getIsSignedIn(selector);
   const username = getUsername(selector);
   const dispatch = useDispatch();
-
+  const path = selector.router.location.pathname;
   const goToHome = useCallback(() => dispatch(push("/")), [dispatch]);
 
   return (
-    <Wrapper>
+    <HeaderContainer>
       <Logo onClick={goToHome}>HOME</Logo>
-
-      {isSignedIn ? (
-        <>
-          <p>{username}</p>
-          <Login onClick={() => dispatch(signOut())}>ログアウト</Login>
-        </>
-      ) : (
-        <Login onClick={() => dispatch(push("/signin"))}>ログイン</Login>
-      )}
-    </Wrapper>
+      {!(path === "/signup" || path === "/signin") &&
+        (isSignedIn ? (
+          <>
+            <p>{username}</p>
+            <Login onClick={() => dispatch(signOut())}>ログアウト</Login>
+          </>
+        ) : (
+          <Login onClick={() => dispatch(push("/signin"))}>ログインする</Login>
+        ))}
+    </HeaderContainer>
   );
 };
 

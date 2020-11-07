@@ -14,7 +14,7 @@ import {
   hideLoadingAction,
 } from "../reducks/loading/actions";
 
-const Wrapper = styled.section`
+const PostListContainer = styled.section`
   background-color: #ffffff;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 `;
@@ -25,13 +25,8 @@ const MenuBar = styled.div`
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
   background-color: #303e59;
 `;
-const ItemWrapper = styled.div`
-  padding: 24px;
-  overflow: scroll;
-  height: 840px;
-`;
 
-const ToggleButton = styled.button<{ isActive: boolean }>`
+const SelectButton = styled.button<{ isActive: boolean }>`
   width: 20%;
   background-color: #303e59;
   color: ${({ isActive }) => (isActive ? `#04a4eb` : `#ffffff`)};
@@ -48,12 +43,18 @@ const ToggleButton = styled.button<{ isActive: boolean }>`
   display: ${({ disabled }) => disabled && "none"};
 `;
 
-const ButtonText = styled.p<{ isActive: boolean }>`
+const SelectButtonLabel = styled.p<{ isActive: boolean }>`
   border-bottom: ${({ isActive }) =>
     isActive ? `solid 2px #04a4eb ` : `none`};
   width: 40%;
   margin: 18px auto;
   padding: 4px;
+`;
+
+const ItemWrapper = styled.div`
+  padding: 24px;
+  overflow: scroll;
+  height: 840px;
 `;
 
 export type Post = {
@@ -172,19 +173,19 @@ const PostList = () => {
 
   return (
     <section>
-      <Wrapper>
+      <PostListContainer>
         <MenuBar>
           {menus.map((menu, index) => (
-            <ToggleButton
+            <SelectButton
               isActive={urlType === menu.type}
               onClick={() => menu.func(menu.type)}
               key={index}
               disabled={menu.type === "bookmark" && !uid ? true : false}
             >
-              <ButtonText isActive={urlType === menu.type}>
+              <SelectButtonLabel isActive={urlType === menu.type}>
                 {menu.label}
-              </ButtonText>
-            </ToggleButton>
+              </SelectButtonLabel>
+            </SelectButton>
           ))}
         </MenuBar>
         <Loading>
@@ -202,7 +203,6 @@ const PostList = () => {
                   />
                 ))
               : posts &&
-                posts.length > 0 &&
                 posts.map((post: Post, index: number) => (
                   <PostListItem
                     key={post.id}
@@ -215,7 +215,7 @@ const PostList = () => {
                 ))}
           </ItemWrapper>
         </Loading>
-      </Wrapper>
+      </PostListContainer>
       {urlType !== "bookmark" && (
         <PageNation currentPage={currentPage} setCurrentPage={setCurrentPage} />
       )}
