@@ -11,7 +11,7 @@ const InputField = styled.input`
   border-top: none;
   background-color: #ebf5ff;
   margin: 64px auto;
-  &:focus {
+  */ &:focus {
     color: #003a6c;
     background-color: #ebf5ff;
   }
@@ -32,13 +32,15 @@ const TextInput: React.FC<Props> = ({
   onChange,
 }) => {
   return (
-    <InputField
-      placeholder={label}
-      type={type}
-      required={required}
-      onChange={onChange}
-      value={value}
-    />
+    <div>
+      <InputField
+        placeholder={label}
+        type={type}
+        required={required}
+        onChange={onChange}
+        value={value}
+      />
+    </div>
   );
 };
 

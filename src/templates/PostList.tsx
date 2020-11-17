@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getBookmarkedPosts, getUserId } from "../reducks/user/selector";
+import { getLoadingState } from "../reducks/loading/selector";
 import { PostListItem, PageNation, SearchField } from "../components/posts";
 import styled from "styled-components";
 import { useDataApi } from "../hooks/hooks";
@@ -76,6 +77,7 @@ const PostList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const selector = useSelector((state) => state);
   const uid = getUserId(selector);
+  const isLoading = getLoadingState(selector);
   const [query, setQuery] = useState("");
   const [{ posts }, { setPosts }] = useDataApi(urlType, currentPage);
   const dispatch = useDispatch();
@@ -133,19 +135,6 @@ const PostList = () => {
       return () => unsubscribe();
     }
   }, []);
-
-  useEffect(() => {
-    try {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-    } catch (error) {
-      window.scrollTo(0, 0);
-    }
-  }, [urlType, currentPage]);
-
   const Search = (search: string) => {
     dispatch(showLoadingAction("Searching....."));
     fetchPostIds(urlType)
@@ -161,6 +150,18 @@ const PostList = () => {
         setCurrentPage(1);
       });
   };
+
+  useEffect(() => {
+    try {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      window.scrollTo(0, 0);
+    }
+  }, [urlType, currentPage, isLoading]);
 
   let bookmarkedPosts: Post[] = getBookmarkedPosts(selector);
 

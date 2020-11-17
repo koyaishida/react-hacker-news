@@ -8,6 +8,7 @@ import styled from "styled-components";
 const SignInContainer = styled.div`
   padding: 0 100px;
   text-align: center;
+  margin: 0 auto;
 `;
 
 const SignIn = () => {
